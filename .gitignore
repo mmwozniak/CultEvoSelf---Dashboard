@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Don't include the data
+Data/
+
+# Don't include the archives
+Archive/

@@ -53,7 +53,7 @@ traits_list  = list(trait_labels.values())
 
 st.sidebar.markdown('# **CultEvoSelf study**')
 
-button_radio = st.sidebar.radio("Choose what you want to see:", ["Introduction", "Task description", "Analysis of valences", "Analysis of traits"])
+button_radio = st.sidebar.radio("Choose what you want to see:", ["Introduction", "Task description", "Analysis of valences", "Analysis of individual traits"])
 
 # button_1 = st.sidebar.button("Introduction")
 # button_2 = st.sidebar.button("Task description")
@@ -81,14 +81,95 @@ selected_selectbox = st.sidebar.selectbox('Which trait do you want to analyze?',
 # if ((button_1 == True)): # | (button_1 == False & button_2 == False & button_3 == False & button_4 == False)):
 if button_radio == 'Introduction':
     st.title('Introduction')
-    st.markdown('This is a dashboard allowing you to explore the results of the CultEvoSelf study .')
+    st.markdown('This is a dashboard allowing you to explore the results of the **CultEvoSelf study**.')
+    st.markdown('''In this study we investigated whether cultural transmission of information about a minimal ingroup
+                and minimal outgroup differs. Specifically, we focused on transmission of information about 
+                traits displayed by members of each group.
+                ''')
+    st.markdown('### What is social identity and why it matters')
+    st.markdown(''' 
+                Our social identity is what defines our place in society. It reflects the groups that we belong to:
+                which country or nation we represent (national identity), which religion we belong to (religious identity),
+                which gender we have (gender identity). It also involves smaller groups: our family, our circle of friends, 
+                a village, town, or city we live in, and many others.
+                ''')
+    st.markdown(''' All of the groups that we belong to compose our **social identity**.  ''')
+    st.markdown('### Minimal group paradigm')
+    st.markdown(''' x ''')
+    st.markdown('### What is a transmission chain')
+    st.markdown(''' 
+                Transmission chain is a method to investigate how information changes when it is repeatedly transmitted between 
+                people. It is very similar to the children game "Chinese whispers", known also as "Deaf telephone" in some countries.
+                In this game the first person (a seed) transmits an information to some other person. Then that second person transmits 
+                this information to another person and so on... until it reaches the last person. A sequence of people through 
+                which this information travelled is called a **chain**, and each person in this chain is known as a **generation**.
+                ''')
+    st.image(image='img/fig0_transmissionchain.png')
+    st.markdown('### What we found')
+    st.markdown(''' 
+                This dashboard allows you to have a closer look at the results of our study. For a longer discussion of our 
+                results you look at our scientific paper, which you can find under the following link: ____________. 
+                However, an article does not allow to present full results in an interactive manner. Here you can do just that.
+                ''')
+    st.markdown('''
+                In the section "Task description" you can familiarize yourself with the procedure of our experiment, and 
+                in the "Analysis..." sections you can look at our results. 
+                ''')
+    st.markdown('''
+                What did we find?
+                We discovered that...
+                ''')
+    st.markdown('### References')
+    st.markdown(''' 
+                Boyd, R., Richerson, P.J. (1985). *Culture and the evolutionary process*. The University of Chicago Press.  
+                Mesoudi, A. (2011). *Cultural evolution*. The University of Chicago Press.  
+                Morin, O. (2016). *How traditions live and die*. Oxford University Press.  
+                ''')
 
 #%% BUTTON == 2
 
 # if button_2 == True:
 if button_radio == 'Task description':
-    st.title("Task description")
-    st.markdown('Page under construction')
+    st.title("Task description")    
+    st.markdown(''' 
+                ### Experimental task  
+                At the beginning of the experiment participants were presented with task instructions, 
+                which are displayed in Figure 1A. The task instructions first told participants to memorize which of two villages 
+                is “their” village, and which is a village of “strangers” (Green and Blue village – the assignment of colors was 
+                counterbalanced across transmission chains). Afterwards, they read that each group has been previously rated on 
+                a number of traits and that they will see how frequent each trait is in each group. Their task will be to memorize 
+                these frequencies and then send them send them to the next participant, which can be either from the same or 
+                different village as them. ''')
+    st.image(image='img/fig1_task.png')
+    st.markdown(''' 
+                Afterwards, they proceeded to complete the task, which consisted of 21 trials, reflecting 21 traits that were used 
+                in the study. Each trial started with a screen presenting the name of the trait, together with frequencies of its 
+                occurrence of the trait (FOT) in both villages (Figure 1B). FOTs were always natural percentage numbers between 1 
+                and 100. After participants read and memorized the frequencies they had to press a button confirming it. This led 
+                to presentation of two subsequent screens in which participants had to indicate the frequency of that trait for 
+                their and the strangers’ village (displayed in random order) on a continuous line on which only the ending points 
+                were labeled. Clicking on a line left a mark, which participants could correct before confirming their response 
+                by pressing a button below the line.
+                ''')
+    st.image(image='img/fig2_task.png')
+    st.markdown('''
+                ### Procedure of transmission chains  
+                The experiment involved 18 transmission chains with 10 generations (10 instances 
+                of information transmission) in each of them. Seed values for transmission chains were generated before the experiment 
+                using the following rules: (1) the average frequency of occurrence of traits (FOT) within each valence (negative, 
+                neutral, positive) had to be 50%, (2) the average standard deviation of FOT within each valence had to be 
+                approximately 10, (3) the FOTs within each valence cannot repeat, what also ensured requirement (4) that the FOT for 
+                any given trait could not be the same for ingroup and outgroup. Seed values created using these rules were then 
+                assigned to traits. The assignment of traits was counterbalanced across participants to ensure that the same 
+                combination of seed values is equally often used for ingroup and outgroup traits, and equally often used for 
+                negative, neutral and positive traits. The same rules were also applied to seed values of the three additional 
+                traits (religious, political, attractive). ''')
+    st.markdown(''' 
+                The first participant in each transmission chain had to transmit the assigned seed values. For each subsequent 
+                participant in a transmission chain the responses from the previous participant were rounded to a natural number 
+                and used as FOTs to be transmitted. 
+                ''')  
+    st.image(image='img/transmission_chains.png')
     
 #%% BUTTON == 3
 
@@ -101,9 +182,9 @@ if button_radio == 'Analysis of valences':
 #%% BUTTON == 4
 
 # if button_4 == True:
-if button_radio == 'Analysis of traits':
+if button_radio == 'Analysis of individual traits':
     
-    st.title("Analysis of traits")
+    st.title("Analysis of individual traits")
 
     # selected_selectbox = "Attractive"
     # selected_selectbox = st.selectbox('Which trait do you want to analyze?', traits_list)
