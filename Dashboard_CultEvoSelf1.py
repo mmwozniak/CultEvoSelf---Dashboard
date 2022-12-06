@@ -118,7 +118,7 @@ if button_radio == 'Introduction':
                 in the "Analysis..." sections you can look at our results. 
                 ''')
     st.markdown('''
-                What did we find?
+                **What did we find?** 
                 We discovered that...
                 ''')
     st.markdown('### References')
