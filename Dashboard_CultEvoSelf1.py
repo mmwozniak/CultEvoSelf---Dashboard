@@ -29,23 +29,25 @@ import glob
 # Load data
 df_ALL_noSeeds = pd.read_csv('All_CultEvoSelf_Exp1.csv')
 df_ALL = pd.read_csv('All_CultEvoSelf_Exp1_S.csv')
-
+df_Occurr = pd.read_csv('DATA_CultEvo_Occurences.csv')
 
 # Create dictionaries with trait and valence labels
-
 trait_valence_labels = {'Pos': 'Positive', 'Neu': 'Neutral', 'Neg': 'Negative'}
-
 trait_labels = {
     'Add1': 'Attractive','Add2': 'Political','Add3': 'Religious',
     'Neg1': 'Corrupt','Neg2': 'Dishonest','Neg3': 'Lazy','Neg4': 'Without empathy','Neg5': 'Impolite','Neg6': 'Cowardly',
     'Neu1': 'Trendy','Neu2': 'Busy','Neu3': 'Traditional','Neu4': 'Predictable','Neu5': 'Introverted','Neu6': 'Mystical',
     'Pos1': 'Friendly','Pos2': 'Intelligent','Pos3': 'Honorable','Pos4': 'Skilful','Pos5': 'Charismatic','Pos6': 'Creative'
     }
-
 # Inverted trait_labels dictionary
 inv_map = {v: k for k, v in trait_labels.items()}
 # List of traits from th dictionary
 traits_list  = list(trait_labels.values())
+
+# Prepare the occurences data
+occ_summary = df_Occurr.describe()    
+occ_median = df_Occurr.median()
+
 
 #%% DASHBOARD
 
@@ -153,7 +155,7 @@ if button_radio == 'Task description':
                 ''')
     st.image(image='img/fig2_task.png')
     st.markdown('''
-                ### Procedure of transmission chains  
+                ### The procedure of transmission chains  
                 The experiment involved 18 transmission chains with 10 generations (10 instances 
                 of information transmission) in each of them. Seed values for transmission chains were generated before the experiment 
                 using the following rules: (1) the average frequency of occurrence of traits (FOT) within each valence (negative, 
@@ -176,7 +178,99 @@ if button_radio == 'Task description':
 # if button_3 == True:
 if button_radio == 'Analysis of valences':
     st.title("Analysis of valences")
-    st.markdown('Page under construction')
+    st.markdown('''Here you can see transmission chains for averages of traits representing three valences:
+                positive, neutral, and negative. Green colour represents transmission chains for the minimal ingoup 
+                (your village), and red lines represent the minimal outgroup (strangers' village). 
+                Black dot on the right represents the median frequency in general population, as indicated 
+                by our additional survey. Black dot on the left represents the seed value (50%).''')
+    
+    # Extract medians
+    med_pos = occ_median['Positive']
+    med_neu = occ_median['Neutral']
+    med_neg = occ_median['Negative']
+    
+    ################ POSITIVE
+    st.markdown('### Positive traits')
+    st.markdown('Positive traits were: Friendly, Intelligent, Honorable, Skilful, Charismatic, Creative')    
+    # Positive valence
+    trait_valence = 'Pos'
+    # Rearrange the data
+    df_lmm2 = pd.melt(df_ALL, 
+                      id_vars=['participant_exp_code', 'id_exp_chain', 'id_exp_participant'], 
+                      value_vars=['Avg_In_'+trait_valence, 'Avg_Out_'+trait_valence], 
+                      var_name ='group', 
+                      value_name ='Avg_'+trait_valence)
+    # Set plot style
+    sns.set(font_scale=1.5)
+    sns.set_style('whitegrid')
+    fig_dims = 11.7,8.27
+    fig, ax1 = plt.subplots()#figsize=fig_dims)
+    # Produce Lineplot + Stripplot
+    ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait_valence, data=df_lmm2, hue='group', err_style='band', ci=95, palette = ['g', 'r'] ) # also: col, row ; ,x_jitter=0, truncate - limit the data to min-max
+    ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait_valence, data=df_lmm2, hue='group', palette = ['g', 'r'] )
+    ax1.get_legend().remove()
+    trait_valence_labels = {'Pos': 'Positive', 'Neu': 'Neutral', 'Neg': 'Negative'}
+    ax1.set(title='Traits: '+trait_valence_labels[trait_valence], xlabel='Generation', ylabel='FOT: Frequency of occurrence of a trait [%]')    
+    # Add median line
+    plt.plot([0, 10], [50, med_pos], color='gray', marker='o', markersize=15, markerfacecolor='k', markeredgecolor='k')
+    # Display in streamlit
+    st.pyplot(fig)
+    
+    
+    ################ NEUTRAL
+    st.markdown('### Neutral traits')
+    st.markdown('Neutral traits were: Trendy, Busy, Traditional, Predictable, Introverted, Mystical')    
+    # Positive valence
+    trait_valence = 'Neu'
+    # Rearrange the data
+    df_lmm2 = pd.melt(df_ALL, 
+                      id_vars=['participant_exp_code', 'id_exp_chain', 'id_exp_participant'], 
+                      value_vars=['Avg_In_'+trait_valence, 'Avg_Out_'+trait_valence], 
+                      var_name ='group', 
+                      value_name ='Avg_'+trait_valence)
+    # Set plot style
+    sns.set(font_scale=1.5)
+    sns.set_style('whitegrid')
+    fig_dims = 11.7,8.27
+    fig, ax1 = plt.subplots()#figsize=fig_dims)
+    # Produce Lineplot + Stripplot
+    ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait_valence, data=df_lmm2, hue='group', err_style='band', ci=95, palette = ['g', 'r'] ) # also: col, row ; ,x_jitter=0, truncate - limit the data to min-max
+    ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait_valence, data=df_lmm2, hue='group', palette = ['g', 'r'] )
+    ax1.get_legend().remove()
+    trait_valence_labels = {'Pos': 'Positive', 'Neu': 'Neutral', 'Neg': 'Negative'}
+    ax1.set(title='Traits: '+trait_valence_labels[trait_valence], xlabel='Generation', ylabel='FOT: Frequency of occurrence of a trait [%]')    
+    # Add median line
+    plt.plot([0, 10], [50, med_neu], color='gray', marker='o', markersize=15, markerfacecolor='k', markeredgecolor='k')
+    # Display in streamlit
+    st.pyplot(fig)
+    
+    
+    ################ POSITIVE
+    st.markdown('### Negative traits')
+    st.markdown('Negative traits were: Corrupt, Dishonest, Lazy, Without empathy, Impolite, Cowardly')    
+    # Positive valence
+    trait_valence = 'Neg'
+    # Rearrange the data
+    df_lmm2 = pd.melt(df_ALL, 
+                      id_vars=['participant_exp_code', 'id_exp_chain', 'id_exp_participant'], 
+                      value_vars=['Avg_In_'+trait_valence, 'Avg_Out_'+trait_valence], 
+                      var_name ='group', 
+                      value_name ='Avg_'+trait_valence)
+    # Set plot style
+    sns.set(font_scale=1.5)
+    sns.set_style('whitegrid')
+    fig_dims = 11.7,8.27
+    fig, ax1 = plt.subplots()#figsize=fig_dims)
+    # Produce Lineplot + Stripplot
+    ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait_valence, data=df_lmm2, hue='group', err_style='band', ci=95, palette = ['g', 'r'] ) # also: col, row ; ,x_jitter=0, truncate - limit the data to min-max
+    ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait_valence, data=df_lmm2, hue='group', palette = ['g', 'r'] )
+    ax1.get_legend().remove()
+    trait_valence_labels = {'Pos': 'Positive', 'Neu': 'Neutral', 'Neg': 'Negative'}
+    ax1.set(title='Traits: '+trait_valence_labels[trait_valence], xlabel='Generation', ylabel='FOT: Frequency of occurrence of a trait [%]')    
+    # Add median line
+    plt.plot([0, 10], [50, med_neg], color='gray', marker='o', markersize=15, markerfacecolor='k', markeredgecolor='k')
+    # Display in streamlit
+    st.pyplot(fig)
     
     
 #%% BUTTON == 4
@@ -197,7 +291,9 @@ if button_radio == 'Analysis of individual traits':
     st.markdown('''This plot shows how the traits behaved across generations of a transmission chain. Generation 0 is the seed value that 
                 was provided to the first participant in each chain and generation 10 is the last generation in our experiment. 
                 The green line represents averages for participants' village (ingroup), and red line for the strangers' village (outgroup). 
-                Each dot of the corresponding colour represents response from one person. ''')
+                Each dot of the corresponding colour represents response from one person.''')
+    st.markdown('''Black dot on the right represents the median frequency in general population, as indicated 
+                by our additional survey. Black dot on the left represents the seed value (50%).''')
     
     trait = inv_map[selected_selectbox]
     
@@ -211,9 +307,7 @@ if button_radio == 'Analysis of individual traits':
     # Set plot style
     sns.set(font_scale=1.5)
     sns.set_style('whitegrid')
-    
-    fig_dims = 11.7,8.27
-    
+    fig_dims = 11.7,8.27   
     fig, ax1 = plt.subplots()#figsize=fig_dims)
     
     # Lineplot + scatter (stripplot)
@@ -221,6 +315,9 @@ if button_radio == 'Analysis of individual traits':
     ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait, data=df_lmm2, hue='group', palette = ['g', 'r'] )
     ax1.get_legend().remove()
     ax1.set(title='Trait: '+trait_labels[trait], xlabel='Generation', ylabel='FOT [%]')
+    
+    # Add median line
+    plt.plot([0, 10], [50, occ_median[trait_labels[trait]]], color='gray', marker='o', markersize=15, markerfacecolor='k', markeredgecolor='k')
     
     #from matplotlib import rcParams
     #fig = rcParams['figure.figsize'] = 11.7,8.27
