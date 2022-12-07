@@ -30,6 +30,7 @@ import glob
 df_ALL_noSeeds = pd.read_csv('All_CultEvoSelf_Exp1.csv')
 df_ALL = pd.read_csv('All_CultEvoSelf_Exp1_S.csv')
 df_Occurr = pd.read_csv('DATA_CultEvo_Occurences.csv')
+df_Valence = pd.read_csv('DATA_CultEvo_Valences.csv')
 
 # Create dictionaries with trait and valence labels
 trait_valence_labels = {'Pos': 'Positive', 'Neu': 'Neutral', 'Neg': 'Negative'}
@@ -37,12 +38,22 @@ trait_labels = {
     'Add1': 'Attractive','Add2': 'Political','Add3': 'Religious',
     'Neg1': 'Corrupt','Neg2': 'Dishonest','Neg3': 'Lazy','Neg4': 'Without empathy','Neg5': 'Impolite','Neg6': 'Cowardly',
     'Neu1': 'Trendy','Neu2': 'Busy','Neu3': 'Traditional','Neu4': 'Predictable','Neu5': 'Introverted','Neu6': 'Mystical',
-    'Pos1': 'Friendly','Pos2': 'Intelligent','Pos3': 'Honorable','Pos4': 'Skilful','Pos5': 'Charismatic','Pos6': 'Creative'
+    'Pos1': 'Friendly','Pos2': 'Intelligent','Pos3': 'Honorable','Pos4': 'Skillful','Pos5': 'Charismatic','Pos6': 'Creative'
     }
 # Inverted trait_labels dictionary
 inv_map = {v: k for k, v in trait_labels.items()}
-# List of traits from th dictionary
+# List of traits from the dictionary
 traits_list  = list(trait_labels.values())
+traits_codes = list(trait_labels.keys())
+
+
+# Prepare the valences data
+df_Valence = df_Valence.loc[:,traits_list]
+df_Valence['Negative'] = df_Valence.loc[:,['Corrupt','Dishonest','Lazy','Without empathy','Impolite','Cowardly']].mean(axis=1)
+df_Valence['Neutral'] = df_Valence.loc[:,['Trendy','Busy','Traditional','Predictable','Introverted','Mystical']].mean(axis=1)
+df_Valence['Positive'] = df_Valence.loc[:,['Friendly','Intelligent','Honorable','Skillful','Charismatic','Creative']].mean(axis=1)
+val_summary = df_Valence.describe()    
+val_median = df_Valence.median()
 
 # Prepare the occurences data
 occ_summary = df_Occurr.describe()    
@@ -55,7 +66,13 @@ occ_median = df_Occurr.median()
 
 st.sidebar.markdown('# **CultEvoSelf study**')
 
-button_radio = st.sidebar.radio("Choose what you want to see:", ["Introduction", "Task description", "Analysis of valences", "Analysis of individual traits"])
+button_radio = st.sidebar.radio("Choose what you want to see:", 
+                                ["Introduction", 
+                                 "Task description", 
+                                 "Traits: estimated valence",
+                                 "Traits: estimated occurrence", 
+                                 "Analysis of valences", 
+                                 "Analysis of individual traits"])
 
 # button_1 = st.sidebar.button("Introduction")
 # button_2 = st.sidebar.button("Task description")
@@ -66,10 +83,7 @@ selected_selectbox = st.sidebar.selectbox('Which trait do you want to analyze?',
 # selected_selectbox = "Attractive"
 # selected_selectbox = st.sidebar.selectbox('Which trait do you want to analyze?', traits_list)
 
-# st.write(button_1)
-# st.write(button_2)
-# st.write(button_3)
-# st.write(button_4)
+
 
 #%% NO BUTTON PRESSED
 
@@ -78,9 +92,8 @@ selected_selectbox = st.sidebar.selectbox('Which trait do you want to analyze?',
 #     st.markdown('This is a dashboard allowing you to explore the results of the CultEvoSelf study .')
 
 
-#%% BUTTON == 1 or none pressed
+#%% BUTTON == 'Introduction' or none pressed
 
-# if ((button_1 == True)): # | (button_1 == False & button_2 == False & button_3 == False & button_4 == False)):
 if button_radio == 'Introduction':
     st.title('Introduction')
     st.markdown('This is a dashboard allowing you to explore the results of the **CultEvoSelf study**.')
@@ -128,9 +141,8 @@ if button_radio == 'Introduction':
                 Morin, O. (2016). *How traditions live and die*. Oxford University Press.  
                 ''')
 
-#%% BUTTON == 2
+#%% BUTTON == 'Task description'
 
-# if button_2 == True:
 if button_radio == 'Task description':
     st.title("Task description")    
     st.markdown(''' 
@@ -173,9 +185,144 @@ if button_radio == 'Task description':
                 ''')  
     st.image(image='img/transmission_chains.png')
     
-#%% BUTTON == 3
+#%% BUTTON == 'Traits: estimated valence'
 
-# if button_3 == True:
+if button_radio == 'Traits: estimated valence':
+    st.title("Traits: estimated valence")
+    st.markdown('''This section shows how negative/positive each trait used in the study was judged. 
+                Responses were given on a scale from 1 (very negative) to 7 (very positive).
+                It shows the results of an additional study conducted with 26 participants. 
+                ''')
+    
+    # Prepare the table
+    traits_tab = val_summary#.iloc[:,2:23]
+    traits_tab = traits_tab.loc[['mean', 'std', '25%', '50%', '75%'],:].transpose().round(2)
+    
+    # Tables - separately for each valence
+    st.markdown("##### Negative traits")
+    st.table(traits_tab.iloc[3:9,:].style.format("{:.2f}"))
+    st.markdown("##### Neutral traits")
+    st.table(traits_tab.iloc[9:15,:].style.format("{:.2f}"))
+    st.markdown("##### Positive traits")
+    st.table(traits_tab.iloc[15:21,:].style.format("{:.2f}"))
+    st.markdown("##### Additional traits")
+    st.markdown('''Attractive is an additional trait, because it is not a psychological trait (unlike the other positive traits). 
+                Political and religious are additional traits, because they showed the greatest variability in whether they 
+                were judged as positive, negative or neutral.''')
+    st.table(traits_tab.iloc[0:3,:].style.format("{:.2f}"))
+    
+    # comparison between valences
+    st.markdown('### Comparison between valences')
+    
+    # with st.echo():
+    #     from statsmodels.stats.anova import AnovaRM
+    #     # Perform ANOVA
+    #     data_long = pd.melt(df_Occurr, 
+    #                         id_vars='participant_num', 
+    #                         value_vars=['Negative', 'Neutral', 'Positive'], 
+    #                         var_name='Valence', value_name='Occurrence')
+    #     resA = AnovaRM(data=data_long, 
+    #                    depvar='Occurrence', 
+    #                    subject='participant_num', 
+    #                    within=['Valence']).fit()        
+    # st.markdown('**Results:**')
+    # st.code(resA)
+        
+        
+    data_occ = df_Valence[['Negative', 'Neutral', 'Positive']]
+    fig, ax = plt.subplots()
+    sns.set(font_scale=2)
+    sns.set_style('whitegrid')
+    fig.set_size_inches(18.5, 10.5)
+    plt.boxplot(data_occ[['Negative', 'Neutral', 'Positive']])
+    ax.set_xticklabels(['Negative', 'Neutral', 'Positive'])#, fontsize=20)
+    st.pyplot(fig)
+    
+
+#%% BUTTON == 'Traits: estimated occurrence'
+
+if button_radio == 'Traits: estimated occurrence':
+    st.title("Traits: estimated occurrence")
+    st.markdown('''This section shows how frequent each trait is believed to be in a general population.
+                Responses were given as percentages.            
+                It shows the results of an additional study conducted with 51 participants. 
+                ''')
+    
+    # Prepare the table
+    traits_tab = occ_summary.iloc[:,2:23]
+    traits_tab = traits_tab.loc[['mean', 'std', '25%', '50%', '75%'],:].transpose().round(2)
+    
+    # Tables - separately for each valence
+    st.markdown("##### Negative traits")
+    st.table(traits_tab.iloc[3:9,:].style.format("{:.2f}"))
+    st.markdown("##### Neutral traits")
+    st.table(traits_tab.iloc[9:15,:].style.format("{:.2f}"))
+    st.markdown("##### Positive traits")
+    st.table(traits_tab.iloc[15:21,:].style.format("{:.2f}"))
+    st.markdown("##### Additional traits")
+    st.markdown('''Attractive is an additional trait, because it is not a psychological trait (unlike the other positive traits). 
+                Political and religious are additional traits, because they showed the greatest variability in whether they 
+                were judged as positive, negative or neutral.''')
+    st.table(traits_tab.iloc[0:3,:].style.format("{:.2f}"))
+    
+    # comparison between valences
+    st.markdown('### Comparison between valences')
+    
+    with st.echo():
+        from statsmodels.stats.anova import AnovaRM
+        # Perform ANOVA
+        data_long = pd.melt(df_Occurr, 
+                            id_vars='participant_num', 
+                            value_vars=['Negative', 'Neutral', 'Positive'], 
+                            var_name='Valence', value_name='Occurrence')
+        resA = AnovaRM(data=data_long, 
+                       depvar='Occurrence', 
+                       subject='participant_num', 
+                       within=['Valence']).fit()        
+    st.markdown('**Results:**')
+    st.code(resA)
+        
+    # Boxplot 
+    data_occ = df_Occurr[['Negative', 'Neutral', 'Positive']]
+    fig, ax = plt.subplots()
+    sns.set(font_scale=2)
+    sns.set_style('whitegrid')
+    fig.set_size_inches(18.5, 10.5)
+    plt.boxplot(data_occ[['Negative', 'Neutral', 'Positive']])
+    ax.set_xticklabels(['Negative', 'Neutral', 'Positive'])#, fontsize=20)
+    st.pyplot(fig)
+    
+    
+    
+    # Correlation with generation 10
+    df_gen10 = df_ALL.loc[df_ALL['id_exp_participant']==10]
+    # Ingroup data
+    gen10_in = df_gen10.loc[:,[i+'_In_response' for i in traits_codes] ]
+    dict_in = { list(gen10_in.columns)[i]: traits_list[i] for i in range(len(traits_list)) }
+    gen10_in.rename(columns=dict_in, inplace=True)
+    gen10_in = gen10_in.mean()
+    # Outgroup data
+    gen10_out = df_gen10.loc[:,[i+'_Out_response' for i in traits_codes] ]
+    dict_out = { list(gen10_out.columns)[i]: traits_list[i] for i in range(len(traits_list)) }
+    gen10_out.rename(columns=dict_out, inplace=True)
+    gen10_out = gen10_out.mean()
+    
+    # Occurence data
+    df_occurence = occ_median[2:23,]
+    
+    # Concatenate
+    df_occ_corr = pd.concat([df_occurence, gen10_in, gen10_out], axis=1)
+    df_occ_corr.rename(columns={ 0:'Occurence', 1:'Generation 10: Ingroup', 2:'Generation 10: Outgroup' }, inplace=True)
+
+    # Run correlation analyses
+    st.markdown('### Correlation with generation 10')
+    st.markdown('''Pearson r correlation between reported occurences in general population
+                and frequency of occurence in generation 10 for minimal ingroup and outgroup.
+                None of the correlations is statistically significant.''')
+    st.table(df_occ_corr.corr().style.format("{:.2f}"))
+        
+#%% BUTTON == 'Analysis of valences'
+
 if button_radio == 'Analysis of valences':
     st.title("Analysis of valences")
     st.markdown('''Here you can see transmission chains for averages of traits representing three valences:
@@ -189,6 +336,7 @@ if button_radio == 'Analysis of valences':
     med_neu = occ_median['Neutral']
     med_neg = occ_median['Negative']
     
+    
     ################ POSITIVE
     st.markdown('### Positive traits')
     st.markdown('Positive traits were: Friendly, Intelligent, Honorable, Skilful, Charismatic, Creative')    
@@ -201,10 +349,10 @@ if button_radio == 'Analysis of valences':
                       var_name ='group', 
                       value_name ='Avg_'+trait_valence)
     # Set plot style
-    sns.set(font_scale=1.5)
+    sns.set(font_scale=2)
     sns.set_style('whitegrid')
-    fig_dims = 11.7,8.27
-    fig, ax1 = plt.subplots()#figsize=fig_dims)
+    fig, ax1 = plt.subplots()
+    fig.set_size_inches(18, 10)
     # Produce Lineplot + Stripplot
     ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait_valence, data=df_lmm2, hue='group', err_style='band', ci=95, palette = ['g', 'r'] ) # also: col, row ; ,x_jitter=0, truncate - limit the data to min-max
     ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait_valence, data=df_lmm2, hue='group', palette = ['g', 'r'] )
@@ -229,10 +377,10 @@ if button_radio == 'Analysis of valences':
                       var_name ='group', 
                       value_name ='Avg_'+trait_valence)
     # Set plot style
-    sns.set(font_scale=1.5)
+    sns.set(font_scale=2)
     sns.set_style('whitegrid')
-    fig_dims = 11.7,8.27
-    fig, ax1 = plt.subplots()#figsize=fig_dims)
+    fig, ax1 = plt.subplots()
+    fig.set_size_inches(18, 10)
     # Produce Lineplot + Stripplot
     ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait_valence, data=df_lmm2, hue='group', err_style='band', ci=95, palette = ['g', 'r'] ) # also: col, row ; ,x_jitter=0, truncate - limit the data to min-max
     ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait_valence, data=df_lmm2, hue='group', palette = ['g', 'r'] )
@@ -257,10 +405,10 @@ if button_radio == 'Analysis of valences':
                       var_name ='group', 
                       value_name ='Avg_'+trait_valence)
     # Set plot style
-    sns.set(font_scale=1.5)
+    sns.set(font_scale=2)
     sns.set_style('whitegrid')
-    fig_dims = 11.7,8.27
-    fig, ax1 = plt.subplots()#figsize=fig_dims)
+    fig, ax1 = plt.subplots()
+    fig.set_size_inches(18, 10)
     # Produce Lineplot + Stripplot
     ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait_valence, data=df_lmm2, hue='group', err_style='band', ci=95, palette = ['g', 'r'] ) # also: col, row ; ,x_jitter=0, truncate - limit the data to min-max
     ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait_valence, data=df_lmm2, hue='group', palette = ['g', 'r'] )
@@ -273,9 +421,8 @@ if button_radio == 'Analysis of valences':
     st.pyplot(fig)
     
     
-#%% BUTTON == 4
+#%% BUTTON == 'Analysis of individual traits'
 
-# if button_4 == True:
 if button_radio == 'Analysis of individual traits':
     
     st.title("Analysis of individual traits")
@@ -305,10 +452,10 @@ if button_radio == 'Analysis of individual traits':
                       value_name ='Avg_'+trait)
     
     # Set plot style
-    sns.set(font_scale=1.5)
+    sns.set(font_scale=2)
     sns.set_style('whitegrid')
-    fig_dims = 11.7,8.27   
-    fig, ax1 = plt.subplots()#figsize=fig_dims)
+    fig, ax1 = plt.subplots()
+    fig.set_size_inches(18, 10)
     
     # Lineplot + scatter (stripplot)
     ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait, data=df_lmm2, hue='group', err_style='band', ci=95, palette = ['g', 'r'] ) # also: col, row ; ,x_jitter=0, truncate - limit the data to min-max
