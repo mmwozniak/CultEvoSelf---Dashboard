@@ -7,8 +7,6 @@ STREAMLIT DASHBOARD for CultEvoSelf project
 To run locally type this in Anaconda Prompt:
     streamlit run Dashboard_CultEvoSelf1.py
 
-
-
 @author: mgwoz
 """
 
@@ -265,6 +263,8 @@ if button_radio == 'Traits: estimated occurrence':
                 were judged as positive, negative or neutral.''')
     st.table(traits_tab.iloc[0:3,:].style.format("{:.2f}"))
     
+    #st.table(traits_tab.style.format("{:.2f}"))
+    
     # comparison between valences
     st.markdown('### Comparison between valences')
     
@@ -320,7 +320,13 @@ if button_radio == 'Traits: estimated occurrence':
                 and frequency of occurence in generation 10 for minimal ingroup and outgroup.
                 None of the correlations is statistically significant.''')
     st.table(df_occ_corr.corr().style.format("{:.2f}"))
-        
+    
+    # Table for Occurrences and Generation 10 average
+    # gen10 = (gen10_in + gen10_out)/2
+    # st.markdown('### Means for averages in generation 10')
+    # st.table(gen10.style.format("{:.2f}"))
+    
+    
 #%% BUTTON == 'Analysis of valences'
 
 if button_radio == 'Analysis of valences':
@@ -512,5 +518,22 @@ if button_radio == 'Analysis of individual traits':
     plt.yticks(fontsize=16)
     
     st.pyplot(fig)
+    
+    
+#%% TEST
+
+# df_ALL = pd.read_csv('All_CultEvoSelf_Exp1_S.csv')
+
+# df_test =  df_ALL.loc[:,:] #df_ALL.loc[:, ['id_exp_chain', 'participant_exp_code']] # creates a deep copy
+# df_test2 = df_test
+# df_test3 = df_test.copy()
+
+# df_test.iloc[0,1] = 9999
+
+# print('df_ALL: '+str(df_ALL.iloc[0,1]))
+# print('df_test: '+str(df_test.iloc[0,1]))
+# print('df_test2: '+str(df_test2.iloc[0,1]))
+# print('df_test3: '+str(df_test3.iloc[0,1]))
+
 
 
