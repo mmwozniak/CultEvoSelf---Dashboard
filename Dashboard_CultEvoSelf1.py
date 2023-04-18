@@ -25,8 +25,8 @@ import glob
 #%% SETUP
 
 # Load data
-df_ALL_noSeeds = pd.read_csv('All_CultEvoSelf_Exp1.csv')
-df_ALL = pd.read_csv('All_CultEvoSelf_Exp1_S.csv')
+df_ALL_noSeeds = pd.read_csv('All_CultEvoSelf_Exp1_noSeeds.csv')
+df_ALL = pd.read_csv('All_CultEvoSelf_Exp1_withSeeds.csv')
 df_Occurr = pd.read_csv('DATA_CultEvo_Occurences.csv')
 df_Valence = pd.read_csv('DATA_CultEvo_Valences.csv')
 
@@ -108,7 +108,28 @@ if button_radio == 'Introduction':
                 ''')
     st.markdown(''' All of the groups that we belong to compose our **social identity**.  ''')
     st.markdown('### Minimal group paradigm')
-    st.markdown(''' x ''')
+    st.markdown(''' 
+                Minimal group paradigm is an experimental method to study social identity in the lab. The main idea is to divide 
+                participants into groups based on arbitrary and irrelevant features. For example, let’s say you’re in a school 
+                class and the teacher randomly divides the class into two groups: one group wears red shirts and the other group 
+                wears blue shirts. Other examples can be as simple as telling participants that they belong to a "triangle" group 
+                and the other group are "squares". Such research found that when people belong to such minimal groups they behave 
+                in a way that favours their ingroup over an outgroup (see: Dunham, 2018; van Bavel & Packer, 2021). For example,
+                thay might want to help others in their group more than those in the other group.
+                ''')
+    st.markdown('### Cultural evolution')
+    st.markdown(''' 
+                Minimal groups allows us to investigate the processes at play when a new social identity is created. 
+                However, our social identity is primarily formed by groups that have existed for years, centuries or even 
+                millenia (for example nations and religions). These large-scale identities often emerged as a consequence of 
+                relatively small distinctions, but relatively small initial differences accumulated and led to huge cultural 
+                differences. For example, it is assumed that the majority of European languages come from the same root: the 
+                protoindoeuropean language. It subsequently evolved into such diverse contemporary languages like English, 
+                Italian, Polish, Albanian, Hindi and Persian. It means that small group divisions that happened thousands of 
+                years ago evolved into full-blown languages, and consequently language-based identites. Such large identities 
+                are not only social, but also cultural phenomena. And the field of cultural evolution investigates what drives
+                processes of emergence and development of culture.
+                ''')
     st.markdown('### What is a transmission chain')
     st.markdown(''' 
                 Transmission chain is a method to investigate how information changes when it is repeatedly transmitted between 
@@ -116,9 +137,13 @@ if button_radio == 'Introduction':
                 In this game the first person (a seed) transmits an information to some other person. Then that second person transmits 
                 this information to another person and so on... until it reaches the last person. A sequence of people through 
                 which this information travelled is called a **chain**, and each person in this chain is known as a **generation**.
+                Transmission chains allow to see if  
                 ''')
     st.image(image='img/fig0_transmissionchain.png')
     st.markdown('### What we found')
+    st.markdown('''
+                We discovered that when people transmit infrormation 
+                ''')
     st.markdown(''' 
                 This dashboard allows you to have a closer look at the results of our study. For a longer discussion of our 
                 results you look at our scientific paper, which you can find under the following link: ____________. 
@@ -128,13 +153,11 @@ if button_radio == 'Introduction':
                 In the section "Task description" you can familiarize yourself with the procedure of our experiment, and 
                 in the "Analysis..." sections you can look at our results. 
                 ''')
-    st.markdown('''
-                **What did we find?** 
-                We discovered that...
-                ''')
     st.markdown('### References')
     st.markdown(''' 
+                van Bavel, J., Packer, D.J. (2021). *The power of Us. Harnessing our shared identities to improve performance, increase cooperation, and promote social harmony*. Little, Brown Spark.
                 Boyd, R., Richerson, P.J. (1985). *Culture and the evolutionary process*. The University of Chicago Press.  
+                Dunham, Y. (2018). Mere Membership. *Trends in Cognitive Sciences*, 22(9), 780-793.
                 Mesoudi, A. (2011). *Cultural evolution*. The University of Chicago Press.  
                 Morin, O. (2016). *How traditions live and die*. Oxford University Press.  
                 ''')
