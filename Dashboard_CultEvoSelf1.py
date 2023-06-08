@@ -487,7 +487,7 @@ if button_radio == 'Analysis of individual traits':
     fig.set_size_inches(18, 10)
     
     # Lineplot + scatter (stripplot)
-    st.markdown(f'---> check line 491: {df_lmm2}')
+    st.markdown(f'---> check line 491: {df_lmm2.iloc[1]}')
     ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait, data=df_lmm2) #, hue='group') #, err_style='band', ci=95, palette = ['g', 'r'] ) # also: col, row ; ,x_jitter=0, truncate - limit the data to min-max
     #ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait, data=df_lmm2, hue='group', palette = ['g', 'r'] )
    #ax1.get_legend().remove()
