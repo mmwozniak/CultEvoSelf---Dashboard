@@ -155,9 +155,9 @@ if button_radio == 'Introduction':
                 ''')
     st.markdown('### References')
     st.markdown(''' 
-                van Bavel, J., Packer, D.J. (2021). *The power of Us. Harnessing our shared identities to improve performance, increase cooperation, and promote social harmony*. Little, Brown Spark.
+                van Bavel, J., Packer, D.J. (2021). *The power of Us. Harnessing our shared identities to improve performance, increase cooperation, and promote social harmony*. Little, Brown Spark.  
                 Boyd, R., Richerson, P.J. (1985). *Culture and the evolutionary process*. The University of Chicago Press.  
-                Dunham, Y. (2018). Mere Membership. *Trends in Cognitive Sciences*, 22(9), 780-793.
+                Dunham, Y. (2018). Mere Membership. *Trends in Cognitive Sciences*, 22(9), 780-793.  
                 Mesoudi, A. (2011). *Cultural evolution*. The University of Chicago Press.  
                 Morin, O. (2016). *How traditions live and die*. Oxford University Press.  
                 ''')
@@ -487,7 +487,7 @@ if button_radio == 'Analysis of individual traits':
     fig.set_size_inches(18, 10)
     
     # Lineplot + scatter (stripplot)
-    ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait, data=df_lmm2, hue='group', err_style='band', ci=95, palette = ['g', 'r'] ) # also: col, row ; ,x_jitter=0, truncate - limit the data to min-max
+    ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait, data=df_lmm2, hue='group'] #, err_style='band', ci=95, palette = ['g', 'r'] ) # also: col, row ; ,x_jitter=0, truncate - limit the data to min-max
     ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait, data=df_lmm2, hue='group', palette = ['g', 'r'] )
     ax1.get_legend().remove()
     ax1.set(title='Trait: '+trait_labels[trait], xlabel='Generation', ylabel='FOT [%]')
