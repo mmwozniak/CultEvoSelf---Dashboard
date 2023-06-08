@@ -488,12 +488,12 @@ if button_radio == 'Analysis of individual traits':
     
     # Lineplot + scatter (stripplot)
     #ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait, data=df_lmm2, hue='group') #, err_style='band', ci=95, palette = ['g', 'r'] ) # also: col, row ; ,x_jitter=0, truncate - limit the data to min-max
-    ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait, data=df_lmm2, hue='group', palette = ['g', 'r'] )
-    ax1.get_legend().remove()
-    ax1.set(title='Trait: '+trait_labels[trait], xlabel='Generation', ylabel='FOT [%]')
+    #ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait, data=df_lmm2, hue='group', palette = ['g', 'r'] )
+    #ax1.get_legend().remove()
+    #ax1.set(title='Trait: '+trait_labels[trait], xlabel='Generation', ylabel='FOT [%]')
     
     # Add median line
-    plt.plot([0, 10], [50, occ_median[trait_labels[trait]]], color='gray', marker='o', markersize=15, markerfacecolor='k', markeredgecolor='k')
+    #plt.plot([0, 10], [50, occ_median[trait_labels[trait]]], color='gray', marker='o', markersize=15, markerfacecolor='k', markeredgecolor='k')
     
     #from matplotlib import rcParams
     #fig = rcParams['figure.figsize'] = 11.7,8.27
