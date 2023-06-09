@@ -607,12 +607,12 @@ if button_radio == 'Analysis of individual traits':
     df_sd = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait] ].groupby('id_exp_participant').describe().reset_index()
     x = df_mean['id_exp_participant']
     y = df_mean['Avg_'+trait]
-    ax1 = plt.plot(x, y, color='green')
+    ax1 = plt.plot(x, y, color='green', label='Ingroup')
     # Outgroup
     df_mean = df_lmm2.loc[ df_lmm2['group']=='Outgroup', ['id_exp_participant', 'Avg_'+trait] ].groupby('id_exp_participant').mean().reset_index()
     x = df_mean['id_exp_participant']
     y = df_mean['Avg_'+trait]
-    ax1 = plt.plot(x, y, color='red')
+    ax1 = plt.plot(x, y, color='red', label='Outgroup')
     
     
     #ax1.get_legend().remove()
