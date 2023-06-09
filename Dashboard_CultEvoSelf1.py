@@ -405,12 +405,12 @@ if button_radio == 'Analysis of valences':
     df_sd = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').describe().reset_index()
     x = df_mean['id_exp_participant']
     y = df_mean['Avg_'+trait_valence]
-    ax1 = plt.plot(x, y, color='green')
+    ax1 = plt.plot(x, y, color='green', label='Ingroup')
     # Outgroup
     df_mean = df_lmm2.loc[ df_lmm2['group']=='Outgroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').mean().reset_index()
     x = df_mean['id_exp_participant']
     y = df_mean['Avg_'+trait_valence]
-    ax1 = plt.plot(x, y, color='red')
+    ax1 = plt.plot(x, y, color='red', label='Outgroup')
     
     
     # Other settings
@@ -466,12 +466,12 @@ if button_radio == 'Analysis of valences':
     df_sd = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').describe().reset_index()
     x = df_mean['id_exp_participant']
     y = df_mean['Avg_'+trait_valence]
-    ax1 = plt.plot(x, y, color='green')
+    ax1 = plt.plot(x, y, color='green', label='Ingroup')
     # Outgroup
     df_mean = df_lmm2.loc[ df_lmm2['group']=='Outgroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').mean().reset_index()
     x = df_mean['id_exp_participant']
     y = df_mean['Avg_'+trait_valence]
-    ax1 = plt.plot(x, y, color='red')
+    ax1 = plt.plot(x, y, color='red', label='Outgroup')
     
     
     # Other settings
@@ -527,12 +527,12 @@ if button_radio == 'Analysis of valences':
     df_sd = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').describe().reset_index()
     x = df_mean['id_exp_participant']
     y = df_mean['Avg_'+trait_valence]
-    ax1 = plt.plot(x, y, color='green')
+    ax1 = plt.plot(x, y, color='green', label='Ingroup')
     # Outgroup
     df_mean = df_lmm2.loc[ df_lmm2['group']=='Outgroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').mean().reset_index()
     x = df_mean['id_exp_participant']
     y = df_mean['Avg_'+trait_valence]
-    ax1 = plt.plot(x, y, color='red')
+    ax1 = plt.plot(x, y, color='red', label='Outgroup')
     
     
     # Other settings
@@ -615,10 +615,10 @@ if button_radio == 'Analysis of individual traits':
     ax1 = plt.plot(x, y, color='red', label='Outgroup')
     
     
-    plt.legend(loc="lower left")
     fig.suptitle('Trait: '+trait_labels[trait])
     plt.xlabel('Generation')
     plt.ylabel('FOT: Frequency of occurrence of a trait [%]')
+    plt.legend(loc="lower left")
     #ax1.set(title='Trait: '+trait_labels[trait], xlabel='Generation', ylabel='FOT [%]')
     
     # Add median line
