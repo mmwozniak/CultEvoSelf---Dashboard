@@ -369,8 +369,8 @@ if button_radio == 'Analysis of valences':
     st.markdown('''Here you can see transmission chains for averages of traits representing three valences:
                 positive, neutral, and negative. Green colour represents transmission chains for the minimal ingoup 
                 (your village), and red lines represent the minimal outgroup (strangers' village). 
-                Black dot on the right represents the median frequency in general population, as indicated 
-                by our additional survey. Black dot on the left represents the seed value (50%).''')
+                Black start on the right represents the median frequency in general population, as indicated 
+                by our additional survey. ''')
     
     # Extract medians
     med_pos = occ_median['Positive']
@@ -618,8 +618,8 @@ if button_radio == 'Analysis of individual traits':
                 was provided to the first participant in each chain and generation 10 is the last generation in our experiment. 
                 The green line represents averages for participants' village (ingroup), and red line for the strangers' village (outgroup). 
                 Each dot of the corresponding colour represents response from one person.''')
-    st.markdown('''Black dot on the right represents the median frequency in general population, as indicated 
-                by our additional survey. Black dot on the left represents the seed value (50%).''')
+    st.markdown('''Black star on the right represents the median frequency in general population, as indicated 
+                by our additional survey. ''')
     
     trait = inv_map[selected_selectbox]
     
