@@ -418,11 +418,21 @@ if button_radio == 'Analysis of valences':
     x = df_mean['id_exp_participant']
     y = df_mean['Avg_'+trait_valence]
     ax1 = plt.plot(x, y, color='green', label='Ingroup')
+    # Confidence interval
+    df_sd = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').describe().reset_index()
+    conf_int = (df_sd[('Avg_'+trait_valence,'std')] / np.sqrt(df_sd[('Avg_'+trait_valence,'count')]) ) * 1.96
+    plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.1, color='tab:green')
+    
     # Outgroup
     df_mean = df_lmm2.loc[ df_lmm2['group']=='Outgroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').mean().reset_index()
     x = df_mean['id_exp_participant']
     y = df_mean['Avg_'+trait_valence]
     ax1 = plt.plot(x, y, color='red', label='Outgroup')
+    # Confidence interval
+    df_sd = df_lmm2.loc[ df_lmm2['group']=='Outgroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').describe().reset_index()
+    conf_int = (df_sd[('Avg_'+trait_valence,'std')] / np.sqrt(df_sd[('Avg_'+trait_valence,'count')]) ) * 1.96
+    plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.1, color='tab:red')
+    
     
     
     # Other settings
@@ -479,11 +489,21 @@ if button_radio == 'Analysis of valences':
     x = df_mean['id_exp_participant']
     y = df_mean['Avg_'+trait_valence]
     ax1 = plt.plot(x, y, color='green', label='Ingroup')
+    # Confidence interval
+    df_sd = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').describe().reset_index()
+    conf_int = (df_sd[('Avg_'+trait_valence,'std')] / np.sqrt(df_sd[('Avg_'+trait_valence,'count')]) ) * 1.96
+    plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.1, color='tab:green')
+    
     # Outgroup
     df_mean = df_lmm2.loc[ df_lmm2['group']=='Outgroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').mean().reset_index()
     x = df_mean['id_exp_participant']
     y = df_mean['Avg_'+trait_valence]
     ax1 = plt.plot(x, y, color='red', label='Outgroup')
+    # Confidence interval
+    df_sd = df_lmm2.loc[ df_lmm2['group']=='Outgroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').describe().reset_index()
+    conf_int = (df_sd[('Avg_'+trait_valence,'std')] / np.sqrt(df_sd[('Avg_'+trait_valence,'count')]) ) * 1.96
+    plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.1, color='tab:red')
+    
     
     
     # Other settings
@@ -542,7 +562,7 @@ if button_radio == 'Analysis of valences':
     # Confidence interval
     df_sd = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').describe().reset_index()
     conf_int = (df_sd[('Avg_'+trait_valence,'std')] / np.sqrt(df_sd[('Avg_'+trait_valence,'count')]) ) * 1.96
-    plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.2, color='tab:green')
+    plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.1, color='tab:green')
     
     # Outgroup
     df_mean = df_lmm2.loc[ df_lmm2['group']=='Outgroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').mean().reset_index()
@@ -550,9 +570,9 @@ if button_radio == 'Analysis of valences':
     y = df_mean['Avg_'+trait_valence]
     ax1 = plt.plot(x, y, color='red', label='Outgroup')
     # Confidence interval
-    df_sd = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').describe().reset_index()
+    df_sd = df_lmm2.loc[ df_lmm2['group']=='Outgroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').describe().reset_index()
     conf_int = (df_sd[('Avg_'+trait_valence,'std')] / np.sqrt(df_sd[('Avg_'+trait_valence,'count')]) ) * 1.96
-    plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.2, color='tab:green')
+    plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.1, color='tab:red')
     
     # Other settings
     trait_valence_labels = {'Pos': 'Positive', 'Neu': 'Neutral', 'Neg': 'Negative'}
@@ -630,7 +650,7 @@ if button_radio == 'Analysis of individual traits':
     
     df_sd = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait] ].groupby('id_exp_participant').describe().reset_index()
     conf_int = (df_sd[('Avg_'+trait,'std')] / np.sqrt(df_sd[('Avg_'+trait,'count')]) ) * 1.96
-    plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.2, color='tab:green')
+    plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.1, color='tab:green')
     # Outgroup
     df_mean = df_lmm2.loc[ df_lmm2['group']=='Outgroup', ['id_exp_participant', 'Avg_'+trait] ].groupby('id_exp_participant').mean().reset_index()
     x = df_mean['id_exp_participant']
@@ -639,7 +659,7 @@ if button_radio == 'Analysis of individual traits':
     
     df_sd = df_lmm2.loc[ df_lmm2['group']=='Outgroup', ['id_exp_participant', 'Avg_'+trait] ].groupby('id_exp_participant').describe().reset_index()
     conf_int = (df_sd[('Avg_'+trait,'std')] / np.sqrt(df_sd[('Avg_'+trait,'count')]) ) * 1.96
-    plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.2, color='tab:red')
+    plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.1, color='tab:red')
     
     # Adjust the figure
     fig.suptitle('Trait: '+trait_labels[trait])
