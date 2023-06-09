@@ -447,7 +447,7 @@ if button_radio == 'Analysis of valences':
     plt.legend(loc="lower left")
     
     # Add the point of believed occurrence in general population
-    plt.plot([10], [med_pos], marker='*', ls='none', ms=35, markerfacecolor='b')
+    plt.plot([10], [med_pos], marker='*', ls='none', ms=35, markerfacecolor='black')
     
     # Display in streamlit
     st.pyplot(fig)
@@ -522,7 +522,7 @@ if button_radio == 'Analysis of valences':
     plt.legend(loc="lower left")
     
     # Add the point of believed occurrence in general population
-    plt.plot([10], [med_neu], marker='*', ls='none', ms=35, markerfacecolor='b')
+    plt.plot([10], [med_neu], marker='*', ls='none', ms=35, markerfacecolor='black')
     
     # Display in streamlit
     st.pyplot(fig)
@@ -594,7 +594,7 @@ if button_radio == 'Analysis of valences':
     plt.legend(loc="lower left")
     
     # Add the point of believed occurrence in general population
-    plt.plot([10], [med_neg], marker='*', ls='none', ms=35, markerfacecolor='b')
+    plt.plot([10], [med_neg], marker='*', ls='none', ms=35, markerfacecolor='black')
     
     # Display in streamlit
     st.pyplot(fig)
@@ -686,13 +686,19 @@ if button_radio == 'Analysis of individual traits':
     
 
     # Add the point of believed occurrence in general population
-    plt.plot([10], [occ_median[trait_labels[trait]]], marker='*', ls='none', ms=35, markerfacecolor='b')
+    plt.plot([10], [occ_median[trait_labels[trait]]], marker='*', ls='none', ms=35, markerfacecolor='black')
     
     #from matplotlib import rcParams
     #fig = rcParams['figure.figsize'] = 11.7,8.27
     #ax1 = sns.set(rc={'figure.figsize':(5, 5)})
     
     st.pyplot(fig)
+    
+    
+    
+    
+    
+    
     
     ########% Display the vector plot
     
