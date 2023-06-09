@@ -768,8 +768,8 @@ if button_radio == 'Analysis of individual traits':
     print(mdf.summary())
     
     st.markdown('### Linear mixed model results')
-    st.markdown(f'''description((The table shows average percentage of occurrence of the trait {trait_labels[trait]} in each generation
-                separately for ingroup and outgroup.))''')
+    st.markdown(f'''The table below shows the results of a linear mixed model analysis performed for Group and Generation. 
+                Chain was treated as a random factor.''')
     st.code(mdf.summary())
     
     
