@@ -743,7 +743,9 @@ if button_radio == 'Analysis of individual traits':
     
     
     # TABLE OF PERCENTAGES AT EACH GENERATION
-    st.markdown('### Average percentage of occurrence in each group in each generation:')
+    st.markdown('### Average percentage of occurrence in each generation')
+    st.markdown(f'''The table shows average percentage of occurrence of {trait_labels[trait]} in each generation
+                separately for ingroup and outgroup.''')
     
     # Calculate and print table
     averages = df_lmm2.groupby(['group', 'id_exp_participant']).mean()['Avg_'+trait].reset_index()
