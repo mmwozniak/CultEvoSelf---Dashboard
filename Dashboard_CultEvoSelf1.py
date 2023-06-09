@@ -414,12 +414,12 @@ if button_radio == 'Analysis of valences':
     
     
     # Other settings
-    #ax1.get_legend().remove()
     trait_valence_labels = {'Pos': 'Positive', 'Neu': 'Neutral', 'Neg': 'Negative'}
     #ax1.set(title='Traits: '+trait_valence_labels[trait_valence], xlabel='Generation', ylabel='FOT: Frequency of occurrence of a trait [%]')    
     fig.suptitle('Traits: '+trait_valence_labels[trait_valence])
     plt.xlabel('Generation')
     plt.ylabel('FOT: Frequency of occurrence of a trait [%]')
+    plt.legend(loc="lower left")
     
     # Add median line
     plt.plot([0, 10], [50, med_pos], color='gray', marker='o', markersize=15, markerfacecolor='k', markeredgecolor='k')
@@ -475,12 +475,12 @@ if button_radio == 'Analysis of valences':
     
     
     # Other settings
-    #ax1.get_legend().remove()
     trait_valence_labels = {'Pos': 'Positive', 'Neu': 'Neutral', 'Neg': 'Negative'}
     #ax1.set(title='Traits: '+trait_valence_labels[trait_valence], xlabel='Generation', ylabel='FOT: Frequency of occurrence of a trait [%]')    
     fig.suptitle('Traits: '+trait_valence_labels[trait_valence])
     plt.xlabel('Generation')
     plt.ylabel('FOT: Frequency of occurrence of a trait [%]')
+    plt.legend(loc="lower left")
     
     # Add median line
     plt.plot([0, 10], [50, med_neu], color='gray', marker='o', markersize=15, markerfacecolor='k', markeredgecolor='k')
@@ -536,12 +536,12 @@ if button_radio == 'Analysis of valences':
     
     
     # Other settings
-    #ax1.get_legend().remove()
     trait_valence_labels = {'Pos': 'Positive', 'Neu': 'Neutral', 'Neg': 'Negative'}
     #ax1.set(title='Traits: '+trait_valence_labels[trait_valence], xlabel='Generation', ylabel='FOT: Frequency of occurrence of a trait [%]')    
-    fig.suptitle('Traits: '+trait_valence_labels[trait_valence])
+    plt.legend(loc="lower left")fig.suptitle('Traits: '+trait_valence_labels[trait_valence])
     plt.xlabel('Generation')
     plt.ylabel('FOT: Frequency of occurrence of a trait [%]')
+    plt.legend(loc="lower left")
     
     # Add median line
     plt.plot([0, 10], [50, med_neg], color='gray', marker='o', markersize=15, markerfacecolor='k', markeredgecolor='k')
@@ -615,7 +615,7 @@ if button_radio == 'Analysis of individual traits':
     ax1 = plt.plot(x, y, color='red', label='Outgroup')
     
     
-    #ax1.get_legend().remove()
+    plt.legend(loc="lower left")
     fig.suptitle('Trait: '+trait_labels[trait])
     plt.xlabel('Generation')
     plt.ylabel('FOT: Frequency of occurrence of a trait [%]')
