@@ -770,7 +770,7 @@ if button_radio == 'Analysis of individual traits':
     st.markdown('### Linear mixed model results')
     st.markdown(f'''description((The table shows average percentage of occurrence of the trait {trait_labels[trait]} in each generation
                 separately for ingroup and outgroup.))''')
-    st.markdown(mdf.summary())
+    st.code(mdf.summary())
     
     
 #%% TEST
