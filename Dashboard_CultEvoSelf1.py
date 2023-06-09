@@ -538,7 +538,7 @@ if button_radio == 'Analysis of valences':
     # Other settings
     trait_valence_labels = {'Pos': 'Positive', 'Neu': 'Neutral', 'Neg': 'Negative'}
     #ax1.set(title='Traits: '+trait_valence_labels[trait_valence], xlabel='Generation', ylabel='FOT: Frequency of occurrence of a trait [%]')    
-    plt.legend(loc="lower left")fig.suptitle('Traits: '+trait_valence_labels[trait_valence])
+    fig.suptitle('Traits: '+trait_valence_labels[trait_valence])
     plt.xlabel('Generation')
     plt.ylabel('FOT: Frequency of occurrence of a trait [%]')
     plt.legend(loc="lower left")
