@@ -142,7 +142,19 @@ if button_radio == 'Introduction':
     st.image(image='img/fig0_transmissionchain.png')
     st.markdown('### What we found')
     st.markdown('''
-                We discovered that when people transmit infrormation 
+                What allows culture to change over time are mistakes that people make when they transmit information to each other. 
+                In our study we observed two types of errors among our participants. First, we found that when representing numbers 
+                on a line our participants had the tendency to indicate position that was lower than the real one. For example, if 
+                they were told that 40% of members of a group has some trait, they would on average indicate a position on the line 
+                that corresponds to 37%. This small response bias would then lead all traits to steadily decrease over time.  
+                The second type of errors happened when participants confused which number described which group. This happened when 
+                for example I saw that 70% of the outgroup and 40% if my ingroup are friendly, and then I indicated that 70% of my 
+                ingroup and 40% of the outgroup are friendly. This mistake most likely happened when participants misremembered the 
+                numbers, but it is also possible that in some cases they made this mistake on purpose.
+                
+                
+                We discovered that when people transmit information about positive and neutral traits describing their ingroup 
+                
                 ''')
     st.markdown(''' 
                 This dashboard allows you to have a closer look at the results of our study. For a longer discussion of our 
@@ -524,16 +536,23 @@ if button_radio == 'Analysis of valences':
     # SEABORN: #ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait_valence, data=df_lmm2, hue='group', err_style='band', ci=95, palette = ['g', 'r'] )
     # Ingroup
     df_mean = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').mean().reset_index()
-    df_sd = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').describe().reset_index()
     x = df_mean['id_exp_participant']
     y = df_mean['Avg_'+trait_valence]
     ax1 = plt.plot(x, y, color='green', label='Ingroup')
+    # Confidence interval
+    df_sd = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').describe().reset_index()
+    conf_int = (df_sd[('Avg_'+trait_valence,'std')] / np.sqrt(df_sd[('Avg_'+trait_valence,'count')]) ) * 1.96
+    plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.2, color='tab:green')
+    
     # Outgroup
     df_mean = df_lmm2.loc[ df_lmm2['group']=='Outgroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').mean().reset_index()
     x = df_mean['id_exp_participant']
     y = df_mean['Avg_'+trait_valence]
     ax1 = plt.plot(x, y, color='red', label='Outgroup')
-    
+    # Confidence interval
+    df_sd = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').describe().reset_index()
+    conf_int = (df_sd[('Avg_'+trait_valence,'std')] / np.sqrt(df_sd[('Avg_'+trait_valence,'count')]) ) * 1.96
+    plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.2, color='tab:green')
     
     # Other settings
     trait_valence_labels = {'Pos': 'Positive', 'Neu': 'Neutral', 'Neg': 'Negative'}
@@ -600,21 +619,29 @@ if button_radio == 'Analysis of individual traits':
     y = df_lmm2.loc[ df_lmm2['group']=='Outgroup', 'Avg_'+trait]
     ax1 = plt.scatter(x=x, y=y, color='red')
 
+
     # LINEPLOT
     # SEABORN: #ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait, data=df_lmm2) #, hue='group') #, err_style='band', ci=95, palette = ['g', 'r'] )
     # Ingroup
-    df_mean = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait] ].groupby('id_exp_participant').mean().reset_index()
-    df_sd = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait] ].groupby('id_exp_participant').describe().reset_index()
+    df_mean = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait] ].groupby('id_exp_participant').mean().reset_index()    
     x = df_mean['id_exp_participant']
     y = df_mean['Avg_'+trait]
     ax1 = plt.plot(x, y, color='green', label='Ingroup')
+    
+    df_sd = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait] ].groupby('id_exp_participant').describe().reset_index()
+    conf_int = (df_sd[('Avg_'+trait,'std')] / np.sqrt(df_sd[('Avg_'+trait,'count')]) ) * 1.96
+    plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.2, color='tab:green')
     # Outgroup
     df_mean = df_lmm2.loc[ df_lmm2['group']=='Outgroup', ['id_exp_participant', 'Avg_'+trait] ].groupby('id_exp_participant').mean().reset_index()
     x = df_mean['id_exp_participant']
     y = df_mean['Avg_'+trait]
     ax1 = plt.plot(x, y, color='red', label='Outgroup')
     
+    df_sd = df_lmm2.loc[ df_lmm2['group']=='Outgroup', ['id_exp_participant', 'Avg_'+trait] ].groupby('id_exp_participant').describe().reset_index()
+    conf_int = (df_sd[('Avg_'+trait,'std')] / np.sqrt(df_sd[('Avg_'+trait,'count')]) ) * 1.96
+    plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.2, color='tab:red')
     
+    # Adjust the figure
     fig.suptitle('Trait: '+trait_labels[trait])
     plt.xlabel('Generation')
     plt.ylabel('FOT: Frequency of occurrence of a trait [%]')
