@@ -416,7 +416,11 @@ if button_radio == 'Analysis of valences':
     # Other settings
     #ax1.get_legend().remove()
     trait_valence_labels = {'Pos': 'Positive', 'Neu': 'Neutral', 'Neg': 'Negative'}
-    ax1.set(title='Traits: '+trait_valence_labels[trait_valence], xlabel='Generation', ylabel='FOT: Frequency of occurrence of a trait [%]')    
+    #ax1.set(title='Traits: '+trait_valence_labels[trait_valence], xlabel='Generation', ylabel='FOT: Frequency of occurrence of a trait [%]')    
+    fig.suptitle('Traits: '+trait_valence_labels[trait_valence])
+    plt.xlabel('Generation')
+    plt.ylabel('FOT: Frequency of occurrence of a trait [%]')
+    
     # Add median line
     plt.plot([0, 10], [50, med_pos], color='gray', marker='o', markersize=15, markerfacecolor='k', markeredgecolor='k')
     # Display in streamlit
@@ -473,7 +477,11 @@ if button_radio == 'Analysis of valences':
     # Other settings
     #ax1.get_legend().remove()
     trait_valence_labels = {'Pos': 'Positive', 'Neu': 'Neutral', 'Neg': 'Negative'}
-    ax1.set(title='Traits: '+trait_valence_labels[trait_valence], xlabel='Generation', ylabel='FOT: Frequency of occurrence of a trait [%]')    
+    #ax1.set(title='Traits: '+trait_valence_labels[trait_valence], xlabel='Generation', ylabel='FOT: Frequency of occurrence of a trait [%]')    
+    fig.suptitle('Traits: '+trait_valence_labels[trait_valence])
+    plt.xlabel('Generation')
+    plt.ylabel('FOT: Frequency of occurrence of a trait [%]')
+    
     # Add median line
     plt.plot([0, 10], [50, med_neu], color='gray', marker='o', markersize=15, markerfacecolor='k', markeredgecolor='k')
     # Display in streamlit
@@ -530,7 +538,11 @@ if button_radio == 'Analysis of valences':
     # Other settings
     #ax1.get_legend().remove()
     trait_valence_labels = {'Pos': 'Positive', 'Neu': 'Neutral', 'Neg': 'Negative'}
-    ax1.set(title='Traits: '+trait_valence_labels[trait_valence], xlabel='Generation', ylabel='FOT: Frequency of occurrence of a trait [%]')    
+    #ax1.set(title='Traits: '+trait_valence_labels[trait_valence], xlabel='Generation', ylabel='FOT: Frequency of occurrence of a trait [%]')    
+    fig.suptitle('Traits: '+trait_valence_labels[trait_valence])
+    plt.xlabel('Generation')
+    plt.ylabel('FOT: Frequency of occurrence of a trait [%]')
+    
     # Add median line
     plt.plot([0, 10], [50, med_neg], color='gray', marker='o', markersize=15, markerfacecolor='k', markeredgecolor='k')
     # Display in streamlit
@@ -604,7 +616,10 @@ if button_radio == 'Analysis of individual traits':
     
     
     #ax1.get_legend().remove()
-    ax1.set(title='Trait: '+trait_labels[trait], xlabel='Generation', ylabel='FOT [%]')
+    fig.suptitle('Trait: '+trait_labels[trait])
+    plt.xlabel('Generation')
+    plt.ylabel('FOT: Frequency of occurrence of a trait [%]')
+    #ax1.set(title='Trait: '+trait_labels[trait], xlabel='Generation', ylabel='FOT [%]')
     
     # Add median line
     plt.plot([0, 10], [50, occ_median[trait_labels[trait]]], color='gray', marker='o', markersize=15, markerfacecolor='k', markeredgecolor='k')
