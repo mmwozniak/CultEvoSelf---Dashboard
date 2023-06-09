@@ -480,6 +480,8 @@ if button_radio == 'Analysis of individual traits':
                       var_name ='group', 
                       value_name ='Avg_'+trait)
     
+    df_lmm2['group'] = df_lmm2['group'].map({ trait+'_In_response': 'Ingroup', trait+'_Out_response': 'Outgroup' })
+    
     # CONTROL: TABLE
     st.table(df_lmm2.head())
     
@@ -494,7 +496,16 @@ if button_radio == 'Analysis of individual traits':
     #fig = sns.lineplot(x='id_exp_participant', y='Avg_'+trait, data=df_lmm2) #, hue='group') #, err_style='band', ci=95, palette = ['g', 'r'] ) # also: col, row ; ,x_jitter=0, truncate - limit the data to min-max
     #ax1 = plt.plot(x='id_exp_participant', y='Avg_'+trait, data=df_lmm2) #, hue='group', err_style='band', ci=95, palette = ['g', 'r'] )
     #ax1 = plt.plot(df_lmm2['id_exp_participant'], y=df_lmm2['Avg_'+trait])
-    ax1 = plt.scatter(x=df_lmm2['id_exp_participant'], y=df_lmm2['Avg_'+trait]) #, c=df_lmm2['group'])
+    
+    x = df_lmm2.loc[ df_lmm2['group']=='Ingroup', 'id_exp_participant']
+    y = df_lmm2.loc[ df_lmm2['group']=='Ingroup', 'Avg_'+trait]
+    ax1 = plt.scatter(x=x, y=y, color='green')
+    
+    x = df_lmm2.loc[ df_lmm2['group']=='Outgroup', 'id_exp_participant']
+    y = df_lmm2.loc[ df_lmm2['group']=='Outgroup', 'Avg_'+trait]
+    ax1 = plt.scatter(x=x, y=y, color='red')
+    
+    #ax1 = plt.scatter(x=df_lmm2.loc[df_lmm2['group']=='Outgroup', 'id_exp_participant'], y=df_lmm2['Avg_'+trait], color='red')
     #ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait, data=df_lmm2, hue='group', palette = ['g', 'r'] )
    #ax1.get_legend().remove()
     #ax1.set(title='Trait: '+trait_labels[trait], xlabel='Generation', ylabel='FOT [%]')
