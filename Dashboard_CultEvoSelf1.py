@@ -21,6 +21,7 @@ import scipy as sp               #
 import pingouin as pg
 import os                        # operating system
 import glob
+import statsmodels.formula.api as smf
 
 #%% SETUP
 
@@ -752,6 +753,24 @@ if button_radio == 'Analysis of individual traits':
     averages = pd.pivot(averages, index='group', columns='id_exp_participant')
     averages.columns = averages.columns.droplevel(0)
     st.table(averages.style.format("{:.1f}"))
+    
+    
+    
+    # MIXED MODEL 
+    
+    df_lmm = df_lmm2.rename({'participant_exp_code':'Participant', 'id_exp_chain':'Chain', 'id_exp_participant':'Generation', 'group':'Group', 'Avg_'+trait:'Average'}, axis=1) 
+    # Specify the model
+    md = smf.mixedlm("Average ~ Group + Generation + Group*Generation", data=df_lmm, groups=df_lmm["Chain"])
+    # Fit the model
+    mdf = md.fit()
+    # Print the summary
+    print('\n----------- MODEL 1 -------------\n')
+    print(mdf.summary())
+    
+    st.markdown('### Linear mixed model results')
+    st.markdown(f'''description((The table shows average percentage of occurrence of the trait {trait_labels[trait]} in each generation
+                separately for ingroup and outgroup.))''')
+    st.markdown(mdf.summary())
     
     
 #%% TEST
