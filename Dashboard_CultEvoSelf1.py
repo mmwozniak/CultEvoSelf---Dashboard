@@ -398,6 +398,9 @@ if button_radio == 'Analysis of valences':
     fig.set_size_inches(18, 10)
 
     # Produce Lineplot + Stripplot
+    
+    # Add the 50% line
+    plt.plot([0, 10], [50, 50], color='grey')
 
     # SCATTERPLOT
     # SEABORN: ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait_valence, data=df_lmm2, hue='group', palette = ['g', 'r'] )
@@ -443,8 +446,9 @@ if button_radio == 'Analysis of valences':
     plt.ylabel('FOT: Frequency of occurrence of a trait [%]')
     plt.legend(loc="lower left")
     
-    # Add median line
-    plt.plot([0, 10], [50, med_pos], color='gray', marker='o', markersize=15, markerfacecolor='k', markeredgecolor='k')
+    # Add the point of believed occurrence in general population
+    plt.plot([10], [med_pos], marker='*', ls='none', ms=35, markerfacecolor='b')
+    
     # Display in streamlit
     st.pyplot(fig)
     
@@ -469,6 +473,9 @@ if button_radio == 'Analysis of valences':
     fig.set_size_inches(18, 10)
 
     # Produce Lineplot + Stripplot
+    
+    # Add the 50% line
+    plt.plot([0, 10], [50, 50], color='grey')
 
     # SCATTERPLOT
     # SEABORN: ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait_valence, data=df_lmm2, hue='group', palette = ['g', 'r'] )
@@ -514,8 +521,9 @@ if button_radio == 'Analysis of valences':
     plt.ylabel('FOT: Frequency of occurrence of a trait [%]')
     plt.legend(loc="lower left")
     
-    # Add median line
-    plt.plot([0, 10], [50, med_neu], color='gray', marker='o', markersize=15, markerfacecolor='k', markeredgecolor='k')
+    # Add the point of believed occurrence in general population
+    plt.plot([10], [med_neu], marker='*', ls='none', ms=35, markerfacecolor='b')
+    
     # Display in streamlit
     st.pyplot(fig)
     
@@ -540,6 +548,9 @@ if button_radio == 'Analysis of valences':
     fig.set_size_inches(18, 10)
 
     # Produce Lineplot + Stripplot
+    
+    # Add the 50% line
+    plt.plot([0, 10], [50, 50], color='grey')
 
     # SCATTERPLOT
     # SEABORN: ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait_valence, data=df_lmm2, hue='group', palette = ['g', 'r'] )
@@ -582,8 +593,9 @@ if button_radio == 'Analysis of valences':
     plt.ylabel('FOT: Frequency of occurrence of a trait [%]')
     plt.legend(loc="lower left")
     
-    # Add median line
-    plt.plot([0, 10], [50, med_neg], color='gray', marker='o', markersize=15, markerfacecolor='k', markeredgecolor='k')
+    # Add the point of believed occurrence in general population
+    plt.plot([10], [med_neg], marker='*', ls='none', ms=35, markerfacecolor='b')
+    
     # Display in streamlit
     st.pyplot(fig)
     
@@ -628,6 +640,9 @@ if button_radio == 'Analysis of individual traits':
     
     # LINEPLOT + SCATTERPLOT (stripplot)
     
+    # Add the 50% line
+    plt.plot([0, 10], [50, 50], color='grey')
+    
     # SCATTERPLOT
     # SEABORN: ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait, data=df_lmm2, hue='group', palette = ['g', 'r'] )
     # Ingroup
@@ -662,14 +677,16 @@ if button_radio == 'Analysis of individual traits':
     plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.1, color='tab:red')
     
     # Adjust the figure
+    plt.ylim([0,100])
     fig.suptitle('Trait: '+trait_labels[trait])
     plt.xlabel('Generation')
     plt.ylabel('FOT: Frequency of occurrence of a trait [%]')
     plt.legend(loc="lower left")
     #ax1.set(title='Trait: '+trait_labels[trait], xlabel='Generation', ylabel='FOT [%]')
     
-    # Add median line
-    plt.plot([0, 10], [50, occ_median[trait_labels[trait]]], color='gray', marker='o', markersize=15, markerfacecolor='k', markeredgecolor='k')
+
+    # Add the point of believed occurrence in general population
+    plt.plot([10], [occ_median[trait_labels[trait]]], marker='*', ls='none', ms=35, markerfacecolor='b')
     
     #from matplotlib import rcParams
     #fig = rcParams['figure.figsize'] = 11.7,8.27
