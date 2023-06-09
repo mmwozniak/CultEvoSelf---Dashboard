@@ -414,7 +414,7 @@ if button_radio == 'Analysis of valences':
     
     
     # Other settings
-    ax1.get_legend().remove()
+    #ax1.get_legend().remove()
     trait_valence_labels = {'Pos': 'Positive', 'Neu': 'Neutral', 'Neg': 'Negative'}
     ax1.set(title='Traits: '+trait_valence_labels[trait_valence], xlabel='Generation', ylabel='FOT: Frequency of occurrence of a trait [%]')    
     # Add median line
@@ -471,7 +471,7 @@ if button_radio == 'Analysis of valences':
     
     
     # Other settings
-    ax1.get_legend().remove()
+    #ax1.get_legend().remove()
     trait_valence_labels = {'Pos': 'Positive', 'Neu': 'Neutral', 'Neg': 'Negative'}
     ax1.set(title='Traits: '+trait_valence_labels[trait_valence], xlabel='Generation', ylabel='FOT: Frequency of occurrence of a trait [%]')    
     # Add median line
@@ -528,7 +528,7 @@ if button_radio == 'Analysis of valences':
     
     
     # Other settings
-    ax1.get_legend().remove()
+    #ax1.get_legend().remove()
     trait_valence_labels = {'Pos': 'Positive', 'Neu': 'Neutral', 'Neg': 'Negative'}
     ax1.set(title='Traits: '+trait_valence_labels[trait_valence], xlabel='Generation', ylabel='FOT: Frequency of occurrence of a trait [%]')    
     # Add median line
