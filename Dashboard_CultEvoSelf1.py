@@ -433,14 +433,44 @@ if button_radio == 'Analysis of valences':
                       value_vars=['Avg_In_'+trait_valence, 'Avg_Out_'+trait_valence], 
                       var_name ='group', 
                       value_name ='Avg_'+trait_valence)
+    df_lmm2['group'] = df_lmm2['group'].map({ 'Avg_In_'+trait_valence: 'Ingroup', 'Avg_Out_'+trait_valence: 'Outgroup' })
+    
     # Set plot style
     sns.set(font_scale=2)
     sns.set_style('whitegrid')
     fig, ax1 = plt.subplots()
     fig.set_size_inches(18, 10)
     # Produce Lineplot + Stripplot
-    ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait_valence, data=df_lmm2, hue='group', err_style='band', ci=95, palette = ['g', 'r'] ) # also: col, row ; ,x_jitter=0, truncate - limit the data to min-max
-    ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait_valence, data=df_lmm2, hue='group', palette = ['g', 'r'] )
+    #ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait_valence, data=df_lmm2, hue='group', err_style='band', ci=95, palette = ['g', 'r'] ) # also: col, row ; ,x_jitter=0, truncate - limit the data to min-max
+    #ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait_valence, data=df_lmm2, hue='group', palette = ['g', 'r'] )
+    
+    # SCATTERPLOT
+    # SEABORN: ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait, data=df_lmm2, hue='group', palette = ['g', 'r'] )
+    # Ingroup
+    x = df_lmm2.loc[ df_lmm2['group']=='Ingroup', 'id_exp_participant']
+    y = df_lmm2.loc[ df_lmm2['group']=='Ingroup', 'Avg_'+trait_valence]
+    ax1 = plt.scatter(x=x, y=y, color='green')
+    # Outgroup
+    x = df_lmm2.loc[ df_lmm2['group']=='Outgroup', 'id_exp_participant']
+    y = df_lmm2.loc[ df_lmm2['group']=='Outgroup', 'Avg_'+trait_valence]
+    ax1 = plt.scatter(x=x, y=y, color='red')
+
+    # LINEPLOT
+    # SEABORN: #ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait, data=df_lmm2) #, hue='group') #, err_style='band', ci=95, palette = ['g', 'r'] )
+    # Ingroup
+    df_mean = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').mean().reset_index()
+    df_sd = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').describe().reset_index()
+    x = df_mean['id_exp_participant']
+    y = df_mean['Avg_'+trait_valence]
+    ax1 = plt.plot(x, y, color='green')
+    # Outgroup
+    df_mean = df_lmm2.loc[ df_lmm2['group']=='Outgroup', ['id_exp_participant', 'Avg_'+trait_valence] ].groupby('id_exp_participant').mean().reset_index()
+    x = df_mean['id_exp_participant']
+    y = df_mean['Avg_'+trait_valence]
+    ax1 = plt.plot(x, y, color='red')
+    
+    
+    # Other settings
     ax1.get_legend().remove()
     trait_valence_labels = {'Pos': 'Positive', 'Neu': 'Neutral', 'Neg': 'Negative'}
     ax1.set(title='Traits: '+trait_valence_labels[trait_valence], xlabel='Generation', ylabel='FOT: Frequency of occurrence of a trait [%]')    
@@ -482,20 +512,13 @@ if button_radio == 'Analysis of individual traits':
     
     df_lmm2['group'] = df_lmm2['group'].map({ trait+'_In_response': 'Ingroup', trait+'_Out_response': 'Outgroup' })
     
-    # CONTROL: TABLE
-    st.table(df_lmm2.head())
-    
     # Set plot style
     sns.set(font_scale=2)
     sns.set_style('whitegrid')
     fig, ax1 = plt.subplots()
     fig.set_size_inches(18, 10)
     
-    # Lineplot + scatter (stripplot)
-    st.markdown(f'---> check line 491 (trait = Avg_{trait}): {df_lmm2.columns}')
-    #ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait, data=df_lmm2) #, hue='group') #, err_style='band', ci=95, palette = ['g', 'r'] ) # also: col, row ; ,x_jitter=0, truncate - limit the data to min-max
-    #ax1 = plt.plot(x='id_exp_participant', y='Avg_'+trait, data=df_lmm2) #, hue='group', err_style='band', ci=95, palette = ['g', 'r'] )
-    #ax1 = plt.plot(df_lmm2['id_exp_participant'], y=df_lmm2['Avg_'+trait])
+    # LINEPLOT + SCATTERPLOT (stripplot)
     
     # SCATTERPLOT
     # SEABORN: ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait, data=df_lmm2, hue='group', palette = ['g', 'r'] )
@@ -511,15 +534,16 @@ if button_radio == 'Analysis of individual traits':
     # LINEPLOT
     # SEABORN: #ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait, data=df_lmm2) #, hue='group') #, err_style='band', ci=95, palette = ['g', 'r'] )
     # Ingroup
-    df_temp = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait] ].groupby('id_exp_participant').mean()
-    x = df_temp['id_exp_participant']
-    y = df_temp['Avg_'+trait]
-    ax1 = plt.plot(x=x, y=y, color='green')
+    df_mean = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait] ].groupby('id_exp_participant').mean().reset_index()
+    df_sd = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait] ].groupby('id_exp_participant').describe().reset_index()
+    x = df_mean['id_exp_participant']
+    y = df_mean['Avg_'+trait]
+    ax1 = plt.plot(x, y, color='green')
     # Outgroup
-    df_temp = df_lmm2.loc[ df_lmm2['group']=='Outgroup', ['id_exp_participant', 'Avg_'+trait] ].groupby('id_exp_participant').mean()
-    x = df_temp['id_exp_participant']
-    y = df_temp['Avg_'+trait]
-    ax1 = plt.plot(x=x, y=y, color='red')
+    df_mean = df_lmm2.loc[ df_lmm2['group']=='Outgroup', ['id_exp_participant', 'Avg_'+trait] ].groupby('id_exp_participant').mean().reset_index()
+    x = df_mean['id_exp_participant']
+    y = df_mean['Avg_'+trait]
+    ax1 = plt.plot(x, y, color='red')
     
     
     #ax1.get_legend().remove()
