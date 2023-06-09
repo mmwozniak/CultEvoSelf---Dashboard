@@ -742,6 +742,16 @@ if button_radio == 'Analysis of individual traits':
     st.pyplot(fig)
     
     
+    # TABLE OF PERCENTAGES AT EACH GENERATION
+    st.markdown('### Average percentage of occurrence in each group in each generation:')
+    
+    # Calculate and print table
+    averages = df_lmm2.groupby(['group', 'id_exp_participant']).mean()['Avg_'+trait].reset_index()
+    averages = pd.pivot(averages, index='group', columns='id_exp_participant')
+    averages.columns = averages.columns.droplevel(0)
+    st.table(averages)
+    
+    
 #%% TEST
 
 # df_ALL = pd.read_csv('All_CultEvoSelf_Exp1_S.csv')
