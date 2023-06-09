@@ -493,22 +493,37 @@ if button_radio == 'Analysis of individual traits':
     
     # Lineplot + scatter (stripplot)
     st.markdown(f'---> check line 491 (trait = Avg_{trait}): {df_lmm2.columns}')
-    #fig = sns.lineplot(x='id_exp_participant', y='Avg_'+trait, data=df_lmm2) #, hue='group') #, err_style='band', ci=95, palette = ['g', 'r'] ) # also: col, row ; ,x_jitter=0, truncate - limit the data to min-max
+    #ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait, data=df_lmm2) #, hue='group') #, err_style='band', ci=95, palette = ['g', 'r'] ) # also: col, row ; ,x_jitter=0, truncate - limit the data to min-max
     #ax1 = plt.plot(x='id_exp_participant', y='Avg_'+trait, data=df_lmm2) #, hue='group', err_style='band', ci=95, palette = ['g', 'r'] )
     #ax1 = plt.plot(df_lmm2['id_exp_participant'], y=df_lmm2['Avg_'+trait])
     
+    # SCATTERPLOT
+    # SEABORN: ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait, data=df_lmm2, hue='group', palette = ['g', 'r'] )
+    # Ingroup
     x = df_lmm2.loc[ df_lmm2['group']=='Ingroup', 'id_exp_participant']
     y = df_lmm2.loc[ df_lmm2['group']=='Ingroup', 'Avg_'+trait]
     ax1 = plt.scatter(x=x, y=y, color='green')
-    
+    # Outgroup
     x = df_lmm2.loc[ df_lmm2['group']=='Outgroup', 'id_exp_participant']
     y = df_lmm2.loc[ df_lmm2['group']=='Outgroup', 'Avg_'+trait]
     ax1 = plt.scatter(x=x, y=y, color='red')
+
+    # LINEPLOT
+    # SEABORN: #ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait, data=df_lmm2) #, hue='group') #, err_style='band', ci=95, palette = ['g', 'r'] )
+    # Ingroup
+    df_temp = df_lmm2.loc[ df_lmm2['group']=='Ingroup', ['id_exp_participant', 'Avg_'+trait] ].groupby('id_exp_participant').mean()
+    x = df_temp['id_exp_participant']
+    y = df_temp['Avg_'+trait]
+    ax1 = plt.plot(x=x, y=y, color='green')
+    # Outgroup
+    df_temp = df_lmm2.loc[ df_lmm2['group']=='Outgroup', ['id_exp_participant', 'Avg_'+trait] ].groupby('id_exp_participant').mean()
+    x = df_temp['id_exp_participant']
+    y = df_temp['Avg_'+trait]
+    ax1 = plt.plot(x=x, y=y, color='red')
     
-    #ax1 = plt.scatter(x=df_lmm2.loc[df_lmm2['group']=='Outgroup', 'id_exp_participant'], y=df_lmm2['Avg_'+trait], color='red')
-    #ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait, data=df_lmm2, hue='group', palette = ['g', 'r'] )
-   #ax1.get_legend().remove()
-    #ax1.set(title='Trait: '+trait_labels[trait], xlabel='Generation', ylabel='FOT [%]')
+    
+    #ax1.get_legend().remove()
+    ax1.set(title='Trait: '+trait_labels[trait], xlabel='Generation', ylabel='FOT [%]')
     
     # Add median line
     plt.plot([0, 10], [50, occ_median[trait_labels[trait]]], color='gray', marker='o', markersize=15, markerfacecolor='k', markeredgecolor='k')
