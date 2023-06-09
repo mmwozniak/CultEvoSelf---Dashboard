@@ -480,6 +480,9 @@ if button_radio == 'Analysis of individual traits':
                       var_name ='group', 
                       value_name ='Avg_'+trait)
     
+    # CONTROL: TABLE
+    st.table(df_lmm2)
+    
     # Set plot style
     sns.set(font_scale=2)
     sns.set_style('whitegrid')
@@ -487,10 +490,10 @@ if button_radio == 'Analysis of individual traits':
     fig.set_size_inches(18, 10)
     
     # Lineplot + scatter (stripplot)
-    st.markdown(f'---> check line 491 (trait = {trait}): {df_lmm2.columns}')
+    st.markdown(f'---> check line 491 (trait = Avg_{trait}): {df_lmm2.columns}')
     #ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait, data=df_lmm2) #, hue='group') #, err_style='band', ci=95, palette = ['g', 'r'] ) # also: col, row ; ,x_jitter=0, truncate - limit the data to min-max
     #ax1 = plt.plot(x='id_exp_participant', y='Avg_'+trait, data=df_lmm2) #, hue='group', err_style='band', ci=95, palette = ['g', 'r'] )
-    ax1 = plt.plot(x=df_lmm2['id_exp_participant'], y=df_lmm2['Avg_'+trait])
+    #ax1 = plt.plot(x=df_lmm2['id_exp_participant'], y=df_lmm2['Avg_'+trait])
     #ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait, data=df_lmm2, hue='group', palette = ['g', 'r'] )
    #ax1.get_legend().remove()
     ax1.set(title='Trait: '+trait_labels[trait], xlabel='Generation', ylabel='FOT [%]')
