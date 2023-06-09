@@ -749,7 +749,7 @@ if button_radio == 'Analysis of individual traits':
     averages = df_lmm2.groupby(['group', 'id_exp_participant']).mean()['Avg_'+trait].reset_index()
     averages = pd.pivot(averages, index='group', columns='id_exp_participant')
     averages.columns = averages.columns.droplevel(0)
-    st.table(averages)
+    st.table(averages.style.format("{:.2f}"))
     
     
 #%% TEST
