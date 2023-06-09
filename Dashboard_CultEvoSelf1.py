@@ -757,20 +757,27 @@ if button_radio == 'Analysis of individual traits':
     
     
     # MIXED MODEL 
-    
+    st.markdown('### Linear mixed model results')
+    st.markdown(f'''The table below shows the results of a linear mixed model analysis performed for Group and Generation. 
+                Chain was treated as a random factor.''')
+                
     df_lmm = df_lmm2.rename({'participant_exp_code':'Participant', 'id_exp_chain':'Chain', 'id_exp_participant':'Generation', 'group':'Group', 'Avg_'+trait:'Average'}, axis=1) 
     # Specify the model
     md = smf.mixedlm("Average ~ Group + Generation + Group*Generation", data=df_lmm, groups=df_lmm["Chain"])
     # Fit the model
     mdf = md.fit()
-    # Print the summary
-    print('\n----------- MODEL 1 -------------\n')
-    print(mdf.summary())
     
-    st.markdown('### Linear mixed model results')
-    st.markdown(f'''The table below shows the results of a linear mixed model analysis performed for Group and Generation. 
-                Chain was treated as a random factor.''')
+    
     st.code(mdf.summary())
+    
+    
+    # ADDITIONAL INFORMATION
+    st.markdown('### Additional information')
+    st.markdown(f'''A table showing the number of flips in one and the other direction.''')
+    t = df_ALL[trait+'_InOut_change_YesNo'].value_counts()
+    t.rename({0:'No flip', 1:'Flip: Ingroup becomes bigger', -1:'Flip: Outgroup becomes bigger', 3:'Values were the same'}, axis=0)
+    st.table(t)
+    
     
     
 #%% TEST
