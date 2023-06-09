@@ -775,7 +775,7 @@ if button_radio == 'Analysis of individual traits':
     st.markdown('### Additional information')
     st.markdown(f'''A table showing the number of flips in one and the other direction.''')
     t = df_ALL[trait+'_InOut_change_YesNo'].value_counts()
-    t.rename({0:'No flip', 1:'Flip: Ingroup becomes bigger', -1:'Flip: Outgroup becomes bigger', 3:'Values were the same'}, axis=0)
+    t = t.rename({0:'No flip', 1:'Flip: Ingroup becomes bigger', -1:'Flip: Outgroup becomes bigger', 3:'Values were the same'}, axis=0)
     st.table(t)
     
     
