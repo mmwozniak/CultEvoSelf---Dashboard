@@ -764,7 +764,9 @@ if button_radio == 'Analysis of individual traits':
                 
     df_lmm = df_lmm2.rename({'participant_exp_code':'Participant', 'id_exp_chain':'Chain', 'id_exp_participant':'Generation', 'group':'Group', 'Avg_'+trait:'Average'}, axis=1) 
     # Specify the model
-    md = smf.mixedlm("Average ~ Group + Generation + Group*Generation", data=df_lmm, groups=df_lmm["Chain"], vc_formula = {"Generation" : "1 + Generation"})
+    md = smf.mixedlm("Average ~ Group + Generation + Group*Generation", data=df_lmm, groups=df_lmm["Chain"], vc_formula = {"Generation" : "0 + Generation"})
+    # Model with random slope and intercept - with correlated random slope and intercept
+    #md = smf.mixedlm("Average ~ Group + Generation + Group*Generation", data=df_lmm, groups=df_lmm["Chain"], vc_formula = {"Generation" : "1 + Generation"})
     # Fit the model
     mdf = md.fit()
     
@@ -801,7 +803,8 @@ if button_radio == 'Analysis of individual traits':
                                columns=['Ingroup = 10%', 'Ingroup = 50%'])
 
 
-    st.markdown(f'''A table showing the number of chains that finished close to each attractor.''')
+    st.markdown(f'''A table showing the number of chains that finished close to each attractor, as determined 
+                by k-means cluster analysis.''')
     st.table(df_clusters)
     
     
