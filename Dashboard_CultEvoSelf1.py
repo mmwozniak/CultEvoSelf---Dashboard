@@ -22,6 +22,7 @@ import pingouin as pg
 import os                        # operating system
 import glob
 import statsmodels.formula.api as smf
+import pickle
 
 #%% SETUP
 
@@ -763,7 +764,7 @@ if button_radio == 'Analysis of individual traits':
                 
     df_lmm = df_lmm2.rename({'participant_exp_code':'Participant', 'id_exp_chain':'Chain', 'id_exp_participant':'Generation', 'group':'Group', 'Avg_'+trait:'Average'}, axis=1) 
     # Specify the model
-    md = smf.mixedlm("Average ~ Group + Generation + Group*Generation", data=df_lmm, groups=df_lmm["Chain"])
+    md = smf.mixedlm("Average ~ Group + Generation + Group*Generation", data=df_lmm, groups=df_lmm["Chain"], vc_formula = {"Generation" : "1 + Generation"})
     # Fit the model
     mdf = md.fit()
     
@@ -773,12 +774,35 @@ if button_radio == 'Analysis of individual traits':
     
     # ADDITIONAL INFORMATION
     st.markdown('### Additional information')
+    
     st.markdown(f'''A table showing the number of flips in one and the other direction.''')
     t = df_ALL[trait+'_InOut_change_YesNo'].value_counts()
     t = t.rename({0:'No flip', 1:'Flip: Ingroup becomes bigger', -1:'Flip: Outgroup becomes bigger', 3:'Values were the same'}, axis=0)
     t = t.sort_index()
     st.table(t)
     
+    # CLUSTERING
+    filename = "CultEvo_kmeans.pickle"
+    kmeans = pickle.load(open(filename, "rb"))
+    X = df_ALL.loc[df_ALL['id_exp_participant']==10,:].loc[:,[trait+'_In_response', trait+'_Out_response']]
+    X = X.rename({
+        trait+'_In_response':'In_Gen10',
+        trait+'_Out_response':'Out_Gen10'
+        }, axis=1)
+    y_predict = kmeans.predict(X)
+    cluster_centers = kmeans.cluster_centers_
+    
+    clusters_table = np.array([
+        [np.count_nonzero(y_predict == 1), np.count_nonzero(y_predict == 2)],
+        [np.count_nonzero(y_predict == 3), np.count_nonzero(y_predict == 0)]
+        ])
+    df_clusters = pd.DataFrame(clusters_table, 
+                               index=['Outgroup = 50%', 'Outgroup = 10%'], 
+                               columns=['Ingroup = 10%', 'Ingroup = 50%'])
+
+
+    st.markdown(f'''A table showing the number of chains that finished close to each attractor.''')
+    st.table(df_clusters)
     
     
 #%% TEST
