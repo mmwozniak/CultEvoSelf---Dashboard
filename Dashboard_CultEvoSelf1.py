@@ -759,12 +759,12 @@ if button_radio == 'Analysis of individual traits':
     
     # MIXED MODEL 
     st.markdown('### Linear mixed model results')
-    st.markdown(f'''The table below shows the results of a linear mixed model analysis performed for Group and Generation. 
+    st.markdown('''The table below shows the results of a linear mixed model analysis performed for Group and Generation. 
                 Chain was treated as a random factor.''')
                 
     df_lmm = df_lmm2.rename({'participant_exp_code':'Participant', 'id_exp_chain':'Chain', 'id_exp_participant':'Generation', 'group':'Group', 'Avg_'+trait:'Average'}, axis=1) 
     # Specify the model
-    md = smf.mixedlm("Average ~ Group + Generation + Group*Generation", data=df_lmm, groups=df_lmm["Chain"], vc_formula = {"Generation" : "0"})
+    md = smf.mixedlm("Average ~ Group + Generation + Group*Generation", data=df_lmm, groups=df_lmm["Chain"]) # , vc_formula = {"Generation" : "0"})
     
     # Model with random slope and intercept - with uncorrelated random slope and intercept
     #md = smf.mixedlm("Average ~ Group + Generation + Group*Generation", data=df_lmm, groups=df_lmm["Chain"], vc_formula = {"Generation" : "0 + Generation"})
