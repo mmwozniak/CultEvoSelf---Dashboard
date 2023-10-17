@@ -64,7 +64,7 @@ occ_median = df_Occurr.median()
 
 ### SIDEBAR
 
-st.sidebar.markdown('# **Cultural Evolution of Group Identity study:** **[preprint](https://osf.io/preprints/psyarxiv/ta9rq)**')
+st.sidebar.markdown('# **Cultural Evolution of Group Identity study:** **([preprint](https://osf.io/preprints/psyarxiv/ta9rq))**')
 
 button_radio = st.sidebar.radio("Choose what you want to see:", 
                                 ["Introduction", 
