@@ -140,7 +140,8 @@ if button_radio == 'Introduction':
                 In this game the first person (a seed) transmits an information to some other person. Then that second person transmits 
                 this information to another person and so on... until it reaches the last person. A sequence of people through 
                 which this information travelled is called a **chain**, and each person in this chain is known as a **generation**.
-                Transmission chains allow to see if  
+                Transmission chains allow to see how information changes if it is repeatedly transmitted to another person and what 
+                kind of distortions can emerge during that process.  
                 ''')
     st.image(image='img/fig0_transmissionchain.png')
     st.markdown('### What we found')
