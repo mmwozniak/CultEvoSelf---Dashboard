@@ -97,6 +97,7 @@ selected_selectbox = st.sidebar.selectbox('Which trait do you want to analyze?',
 if button_radio == 'Introduction':
     st.title('Introduction')
     st.markdown('This is a dashboard allowing you to explore the results of the **CultEvoSelf study**.')
+    st.markdown('You can read more about this study and our results here: **[Go to the preprint](https://osf.io/preprints/psyarxiv/ta9rq)**.')
     st.markdown('''In this study we investigated whether cultural transmission of information about a minimal ingroup
                 and minimal outgroup differs. Specifically, we focused on transmission of information about 
                 traits displayed by members of each group.
@@ -155,7 +156,16 @@ if button_radio == 'Introduction':
                 numbers, but it is also possible that in some cases they made this mistake on purpose.
                 
                 
-                We discovered that when people transmit information about positive and neutral traits describing their ingroup 
+                We discovered that when people transmit information about positive and neutral traits describing their ingroup then 
+                these mistakes were slightly smaller than when they were transmitting information about the outgroup. As a result, 
+                at the end of the transmission chains positive and neutral traits were on average more common in ingroup than in the 
+                outgroup. For example, if both groups were perceived as equally intelligent in the beginning (50% of people are 
+                rated as intelligent in both groups) then after 10 generations 43% remained intelligent in the ingroup and only 36% 
+                in the outgroup. Similar effect happened for the neutral traits, but not for the negative traits. Negative traits 
+                at generation 10 were not different between the groups (negative traits were slightly more frquent in the outgroup, 
+                but this effect was not strong enough to be statistically significant).
+
+                We 
                 
                 ''')
     st.markdown(''' 
@@ -458,7 +468,7 @@ if button_radio == 'Analysis of valences':
     ################ NEUTRAL
     st.markdown('### Neutral traits')
     st.markdown('Neutral traits were: Trendy, Busy, Traditional, Predictable, Introverted, Mystical')    
-    # Positive valence
+    # Neutral valence
     trait_valence = 'Neu'
     # Rearrange the data
     df_lmm2 = pd.melt(df_ALL, 
@@ -533,7 +543,7 @@ if button_radio == 'Analysis of valences':
     ################ NEGATIVE
     st.markdown('### Negative traits')
     st.markdown('Negative traits were: Corrupt, Dishonest, Lazy, Without empathy, Impolite, Cowardly')    
-    # Positive valence
+    # Negative valence
     trait_valence = 'Neg'
     # Rearrange the data
     df_lmm2 = pd.melt(df_ALL, 
