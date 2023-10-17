@@ -96,8 +96,7 @@ selected_selectbox = st.sidebar.selectbox('Which trait do you want to analyze?',
 
 if button_radio == 'Introduction':
     st.title('Introduction')
-    st.markdown('This is a dashboard allowing you to explore the results of our study on cultural evolution of group identity.')
-    st.markdown('**You can read more about this study and our results here:** **[Preprint](https://osf.io/preprints/psyarxiv/ta9rq)**.')
+    st.markdown('This is a dashboard allowing you to explore the results of our [study on cultural evolution of group identity](https://osf.io/preprints/psyarxiv/ta9rq).')
     st.markdown('''In this study we investigated whether cultural transmission of information about a minimal ingroup
                 and minimal outgroup differs. Specifically, we focused on transmission of information about 
                 traits displayed by members of each group.
