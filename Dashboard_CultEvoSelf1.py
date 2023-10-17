@@ -64,7 +64,7 @@ occ_median = df_Occurr.median()
 
 ### SIDEBAR
 
-st.sidebar.markdown('# **CultEvoSelf study**')
+st.sidebar.markdown('# **Cultural Evolution of Group Identity study**')
 
 button_radio = st.sidebar.radio("Choose what you want to see:", 
                                 ["Introduction", 
@@ -96,7 +96,7 @@ selected_selectbox = st.sidebar.selectbox('Which trait do you want to analyze?',
 
 if button_radio == 'Introduction':
     st.title('Introduction')
-    st.markdown('This is a dashboard allowing you to explore the results of the **CultEvoSelf study**.')
+    st.markdown('This is a dashboard allowing you to explore the results of our study on cultural evolution of group identity.')
     st.markdown('You can read more about this study and our results here: **[Preprint](https://osf.io/preprints/psyarxiv/ta9rq)**.')
     st.markdown('''In this study we investigated whether cultural transmission of information about a minimal ingroup
                 and minimal outgroup differs. Specifically, we focused on transmission of information about 
