@@ -97,7 +97,7 @@ selected_selectbox = st.sidebar.selectbox('Which trait do you want to analyze?',
 if button_radio == 'Introduction':
     st.title('Introduction')
     st.markdown('This is a dashboard allowing you to explore the results of the **CultEvoSelf study**.')
-    st.markdown('You can read more about this study and our results here: **[Go to the preprint](https://osf.io/preprints/psyarxiv/ta9rq)**.')
+    st.markdown('You can read more about this study and our results here: **[Preprint](https://osf.io/preprints/psyarxiv/ta9rq)**.')
     st.markdown('''In this study we investigated whether cultural transmission of information about a minimal ingroup
                 and minimal outgroup differs. Specifically, we focused on transmission of information about 
                 traits displayed by members of each group.
@@ -165,12 +165,24 @@ if button_radio == 'Introduction':
                 at generation 10 were not different between the groups (negative traits were slightly more frquent in the outgroup, 
                 but this effect was not strong enough to be statistically significant).
 
-                We 
+                Why does it happen? We propose that this came as a result of two processes:
+                (1) Participants were more motivated to be accurate when transmitting information about the ingroup than outgroup
+                (2) Participants had the tendency to slightkly distort transmitted information to make the ingroup more positive and
+                less negative than the outgroup  (so called "ingroup-bias")
+                If these two processes are at plat at the same time then they should cancel each other out leading to no differences 
+                between groups for negative traits, and work in the sam direction for positive and neutral traits - just like we 
+                observed.
+
+                Our results illustrate how even unconscious small biases can increase over time and lead to increased group 
+                polarization. While we did not find such an effect for negative traits, we did find it for positive traits what 
+                might also be the driver behind seeing another group in a comparatively worse light. 
                 
                 ''')
+    st.image(image='img/Chinese whispers2.png')
     st.markdown(''' 
                 This dashboard allows you to have a closer look at the results of our study. For a longer discussion of our 
-                results you look at our scientific paper, which you can find under the following link: ____________. 
+                results you look at our scientific paper, which you can find under the following link: 
+                **[Preprint](https://osf.io/preprints/psyarxiv/ta9rq)**. 
                 However, an article does not allow to present full results in an interactive manner. Here you can do just that.
                 ''')
     st.markdown('''
