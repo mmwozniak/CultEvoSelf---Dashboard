@@ -115,7 +115,7 @@ if button_radio == 'Introduction':
                 Minimal group paradigm is an experimental method to study social identity in the lab. The main idea is to divide 
                 participants into groups based on arbitrary and irrelevant features. For example, let’s say you’re in a school 
                 class and the teacher randomly divides the class into two groups: one group wears red shirts and the other group 
-                wears blue shirts. Other examples can be as simple as telling participants that they belong to a "triangle" group 
+                wears orange shirts. Other examples can be as simple as telling participants that they belong to a "triangle" group 
                 and the other group are "squares". Such research found that when people belong to such minimal groups they behave 
                 in a way that favours their ingroup over an outgroup (see: Dunham, 2018; van Bavel & Packer, 2021). For example,
                 thay might want to help others in their group more than those in the other group.
