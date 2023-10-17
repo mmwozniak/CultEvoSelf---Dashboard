@@ -120,6 +120,7 @@ if button_radio == 'Introduction':
                 in a way that favours their ingroup over an outgroup (see: Dunham, 2018; van Bavel & Packer, 2021). For example,
                 thay might want to help others in their group more than those in the other group.
                 ''')
+    st.image(image='img/Villages - colors 01.png')
     st.markdown('### Cultural evolution')
     st.markdown(''' 
                 Minimal groups allows us to investigate the processes at play when a new social identity is created. 
