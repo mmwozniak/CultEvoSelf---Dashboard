@@ -402,6 +402,7 @@ if button_radio == 'Analysis of macro-patterns':
     st.image(image='img/All_Generation_0.png')
     st.markdown('''Initially all of these points were close to the centre. However, across generations these points started to 
                 spread out, as you can see in teh gif below.''') 
+    st.markdown('### Behaviour of data points across generations')
     st.image(image='img/unclastered_all_gens.gif')
     st.markdown('Below you can see the location of the datapoints when they reached the final generation.')
     st.markdown('### Data at the final generation (Generation 10)')
@@ -423,6 +424,7 @@ if button_radio == 'Analysis of macro-patterns':
     st.markdown('### Detected clusters applied to the seed values')
     st.image(image='img/generation_00.png')
     st.markdown('''Below you can see how each cluster evolved over time.''')
+    st.markdown('### Behaviour of clusters across generations')
     st.image(image='img/gif1.gif')
     
     
