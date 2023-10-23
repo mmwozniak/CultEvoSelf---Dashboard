@@ -31,6 +31,7 @@ df_ALL_noSeeds = pd.read_csv('All_CultEvoSelf_Exp1_noSeeds.csv')
 df_ALL = pd.read_csv('All_CultEvoSelf_Exp1_withSeeds.csv')
 df_Occurr = pd.read_csv('DATA_CultEvo_Occurences.csv')
 df_Valence = pd.read_csv('DATA_CultEvo_Valences.csv')
+df_allTraits = pd.read_csv("DATA_CultEvo_Chains_TraitsLong.csv")
 
 # Create dictionaries with trait and valence labels
 trait_valence_labels = {'Pos': 'Positive', 'Neu': 'Neutral', 'Neg': 'Negative'}
@@ -71,7 +72,8 @@ button_radio = st.sidebar.radio("Choose what you want to see:",
                                  "Task description", 
                                  "Traits: estimated valence",
                                  "Traits: estimated occurrence", 
-                                 "Analysis of valences", 
+                                 "Analysis of macro-patterns", 
+                                 "Analysis of valences",
                                  "Analysis of individual traits"])
 
 # button_1 = st.sidebar.button("Introduction")
@@ -136,23 +138,23 @@ if button_radio == 'Introduction':
     st.markdown('### What is a transmission chain')
     st.markdown(''' 
                 Transmission chain is a method to investigate how information changes when it is repeatedly transmitted between 
-                people. It is very similar to the children game "Chinese whispers", known also as "Deaf telephone" in some countries.
-                In this game the first person (a seed) transmits an information to some other person. Then that second person transmits 
+                people. It is very similar to the children's game "Chinese whispers", known also as "Deaf telephone" in some countries.
+                In this game, the first person (a seed) transmits some information to another person. Then that second person transmits 
                 this information to another person and so on... until it reaches the last person. A sequence of people through 
                 which this information travelled is called a **chain**, and each person in this chain is known as a **generation**.
-                Transmission chains allow to see how information changes if it is repeatedly transmitted to another person and what 
+                Transmission chains allow us to see how information changes if it is repeatedly transmitted to another person and what 
                 kind of distortions can emerge during that process.  
                 ''')
     st.image(image='img/fig0_transmissionchain.png')
     st.markdown('### What we found')
     st.markdown('''
                 What allows culture to change over time are mistakes that people make when they transmit information to each other. 
-                In our study we observed two types of errors among our participants. First, we found that when representing numbers 
+                In our study we observed two types of mistakes among our participants. First, we found that when representing numbers 
                 on a line our participants had the tendency to indicate position that was lower than the real one. For example, if 
-                they were told that 40% of members of a group has some trait, they would on average indicate a position on the line 
+                they were told that 40% of members of a group have some trait, they would on average indicate a position on the line 
                 that corresponds to 37%. This small response bias would then lead all traits to steadily decrease over time.  
                 The second type of errors happened when participants confused which number described which group. This happened when 
-                for example I saw that 70% of the outgroup and 40% if my ingroup are friendly, and then I indicated that 70% of my 
+                for example I saw that 70% of the outgroup and 40% of my ingroup are friendly, and then I indicated that 70% of my 
                 ingroup and 40% of the outgroup are friendly. This mistake most likely happened when participants misremembered the 
                 numbers, but it is also possible that in some cases they made this mistake on purpose.
                 
@@ -161,20 +163,20 @@ if button_radio == 'Introduction':
                 these mistakes were slightly smaller than when they were transmitting information about the outgroup. As a result, 
                 at the end of the transmission chains positive and neutral traits were on average more common in ingroup than in the 
                 outgroup. For example, if both groups were perceived as equally intelligent in the beginning (50% of people are 
-                rated as intelligent in both groups) then after 10 generations 43% remained intelligent in the ingroup and only 36% 
+                rated as intelligent in both groups) then after 10 generations, 43% remained intelligent in the ingroup and only 36% 
                 in the outgroup. Similar effect happened for the neutral traits, but not for the negative traits. Negative traits 
-                at generation 10 were not different between the groups (negative traits were slightly more frquent in the outgroup, 
+                at generation 10 were not different between the groups (negative traits were slightly more frequent in the outgroup, 
                 but this effect was not strong enough to be statistically significant).
 
                 Why does it happen? We propose that this came as a result of two processes:
                 (1) Participants were more motivated to be accurate when transmitting information about the ingroup than outgroup
-                (2) Participants had the tendency to slightkly distort transmitted information to make the ingroup more positive and
+                (2) Participants had the tendency to slightly distort transmitted information to make the ingroup more positive and
                 less negative than the outgroup  (so called "ingroup-bias")
-                If these two processes are at plat at the same time then they should cancel each other out leading to no differences 
-                between groups for negative traits, and work in the sam direction for positive and neutral traits - just like we 
+                If these two processes are at play at the same time then they should cancel each other out leading to no differences 
+                between groups for negative traits, and work in the same direction for positive and neutral traits - just like we 
                 observed.
 
-                Our results illustrate how even unconscious small biases can increase over time and lead to increased group 
+                Our results illustrate how even unconscious small biases can accumulate over time and lead to increased group 
                 polarization. While we did not find such an effect for negative traits, we did find it for positive traits what 
                 might also be the driver behind seeing another group in a comparatively worse light. 
                 
@@ -182,7 +184,7 @@ if button_radio == 'Introduction':
     st.image(image='img/Chinese whispers2.png')
     st.markdown(''' 
                 This dashboard allows you to have a closer look at the results of our study. For a longer discussion of our 
-                results you look at our scientific paper, which you can find under the following link: 
+                results check our scientific paper, which you can find under the following link: 
                 **[Preprint](https://osf.io/preprints/psyarxiv/ta9rq)**. 
                 However, an article does not allow to present full results in an interactive manner. Here you can do just that.
                 ''')
@@ -386,7 +388,80 @@ if button_radio == 'Traits: estimated occurrence':
     # st.markdown('### Means for averages in generation 10')
     # st.table(gen10.style.format("{:.2f}"))
     
+
+#%% BUTTON == 'Analysis of macro-patterns'
+
+if button_radio == 'Analysis of macro-patterns':
+    st.title("Analysis of macro-patterns")
+    st.markdown('''Here you can see how all of the traits behaved across generations. It means that the data here comes from 
+                all types of traits. Each individual trait can be displayed on a plot where x-axis represent the percentage of 
+                occurrence of that trait in the ingroup and y-axis shows the percentage of occurrence of that trait in the 
+                outgroup. Below you can see the locations of all traits at the begiining of the experiment: these are the 
+                values that we gave to the first participants in each chain.''')
+    st.markdown('### Data at Generation 0 (seed values)')
+    st.image(image='img/All_Generation_0.png')
+    st.markdown('''Initially all of these points were close to the centre. However, across generations these points started to 
+                spread out, as you can see in teh gif below.''') 
+    st.image(image='img/unclastered_all_gens.gif')
+    st.markdown('Below you can see the location of the datapoints when they reached the final generation.')
+    st.markdown('### Data at the final generation (Generation 10)')
+    st.image(image='img/All_Generation_10.png')
+    st.markdown('''You can see that these points appear to head towards one of four places: centre, bottom-left corner, 
+                left-centre and bottom-centre''')
+    st.markdown('## Cluster analysis')
+    st.markdown('''Cluster analysis is a statistical technique that allows to discover clusters in the data: groups
+                of data points that are similar to each other. A silhouette score indicated that there were 4 clusters in 
+                our data (max score=0.599), so we conducted K-means clustering on the data from the final generation to 
+                classify all data points into these 4 clusters. Below you can see the results of our classification.''')
+    st.markdown('### Cluster analysis of Generation 10')
+    st.image(image='img/generation_10.png')
+    st.markdown('''At the next step we decided to check whether the initial position of the data points was related to the 
+                final position, so we applied the same classification but to the data from the seed values. Below you can 
+                see the results which show that the initial position was strongly related to the final position at 
+                generation 10 (our additional analysis using decision trees showed that by knowing the initial position 
+                you can know the final position with 60.6% accuracy).''')
+    st.markdown('### Detected clusters applied to the seed values')
+    st.image(image='img/generation_00.png')
+    st.markdown('''Below you can see how each cluster evolved over time.''')
+    st.image(image='img/gif1.gif')
     
+    
+    # # Visualize the data to be clustered - Scatterplot of Gen10 values
+    # df_allSeedGen10 = df_allTraits.loc[df_allTraits['Generation']==10]
+    # #sns.scatterplot(data=df_gen10, x='In_response', y='Out_response')
+    
+    # # Set plot style
+    # sns.set(font_scale=2)
+    # sns.set_style('whitegrid')
+    # fig, ax1 = plt.subplots()
+    # fig.set_size_inches(10, 10)
+
+    # # Produce Lineplot + Stripplot
+    
+    # # Add the 50% line
+    # plt.plot([0, 10], [50, 50], color='grey')
+    
+    # plt.figure(2)
+    # jittersize = 3
+    # res = np.random.random_sample(size = len(df_allSeedGen10))*jittersize - 0.5*jittersize
+    # df_allSeedGen10['In_Seed_jitter'] =  df_allSeedGen10['In_Seed'] + res
+    # res = np.random.random_sample(size = len(df_allSeedGen10))*jittersize - 0.5*jittersize
+    # df_allSeedGen10['Out_Seed_jitter'] =  df_allSeedGen10['Out_Seed'] + res
+    # #g = sns.scatterplot(data=df_allSeedGen10, x='In_Seed_jitter', y='Out_Seed_jitter', hue=Y0, palette='Set1') # y0_predict
+    # #voronoi_plot_2d(vor0,plt.gca())
+    # #plt.scatter(cluster_centers0[:,0], cluster_centers0[:,1], marker='^', s=300, c='k', alpha=0.6)
+    #g.set(xlim=(0,100))
+    #g.set(ylim=(0,100))
+    # plt.plot([0, 100], [50, 50], linewidth=2, color='k')
+    # plt.plot([50, 50], [100, 0], linewidth=2, color='k')
+    # plt.xlabel('Occurence in the ingroup [%]')
+    # plt.ylabel('Occurence in the outgroup [%]')
+    
+    # # Display in streamlit
+    # st.pyplot(fig)
+    
+    #st.image(image='img/Villages - colors 01.png')
+        
 #%% BUTTON == 'Analysis of valences'
 
 if button_radio == 'Analysis of valences':
