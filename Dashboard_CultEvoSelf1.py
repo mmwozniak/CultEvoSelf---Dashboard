@@ -61,6 +61,9 @@ occ_summary = df_Occurr.describe()
 occ_median = df_Occurr.median()
 
 
+# Additional dettings
+include_within_group_plots = False
+
 #%% DASHBOARD
 
 ### SIDEBAR
@@ -701,6 +704,175 @@ if button_radio == 'Analysis of valences':
     # Display in streamlit
     st.pyplot(fig)
     
+    
+    if include_within_group_plots == True:
+    
+        ################################################
+        ################ INGROUP
+        ################################################
+        
+        st.markdown('### Ingroup traits')
+        trait_group = "In"
+        # Rearrange the data
+        df_lmm2 = pd.melt(df_ALL, 
+                          id_vars=['participant_exp_code', 'id_exp_chain', 'id_exp_participant'], 
+                          value_vars=[f'Avg_{trait_group}_Neg', f'Avg_{trait_group}_Neu', f'Avg_{trait_group}_Pos'], 
+                          var_name ='valence', 
+                          value_name ='Avg_'+trait_group)
+        df_lmm2['valence'] = df_lmm2['valence'].map({ f'Avg_{trait_group}_Neg': 'Negative', f'Avg_{trait_group}_Neu': 'Neutral', f'Avg_{trait_group}_Pos': 'Positive' })
+        
+        # Set plot style
+        sns.set(font_scale=2)
+        sns.set_style('whitegrid')
+        fig, ax1 = plt.subplots()
+        fig.set_size_inches(18, 10)
+    
+        # Produce Lineplot + Stripplot
+        
+        # Add the 50% line
+        plt.plot([0, 10], [50, 50], color='grey')
+    
+        # SCATTERPLOT
+        # SEABORN: ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait_valence, data=df_lmm2, hue='group', palette = ['g', 'r'] )
+        # Positive
+        x = df_lmm2.loc[ df_lmm2['valence']=='Positive', 'id_exp_participant']
+        y = df_lmm2.loc[ df_lmm2['valence']=='Positive', 'Avg_'+trait_group]
+        ax1 = plt.scatter(x=x, y=y, color='green')
+        # Neutral
+        x = df_lmm2.loc[ df_lmm2['valence']=='Neutral', 'id_exp_participant']
+        y = df_lmm2.loc[ df_lmm2['valence']=='Neutral', 'Avg_'+trait_group]
+        ax1 = plt.scatter(x=x, y=y, color='blue')
+        # Negative
+        x = df_lmm2.loc[ df_lmm2['valence']=='Negative', 'id_exp_participant']
+        y = df_lmm2.loc[ df_lmm2['valence']=='Negative', 'Avg_'+trait_group]
+        ax1 = plt.scatter(x=x, y=y, color='red')
+    
+        # LINEPLOT
+        # SEABORN: #ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait_valence, data=df_lmm2, hue='group', err_style='band', ci=95, palette = ['g', 'r'] )
+        # Positive
+        df_mean = df_lmm2.loc[ df_lmm2['valence']=='Positive', ['id_exp_participant', 'Avg_'+trait_group] ].groupby('id_exp_participant').mean().reset_index()
+        x = df_mean['id_exp_participant']
+        y = df_mean['Avg_'+trait_group]
+        ax1 = plt.plot(x, y, color='green', label='Positive')
+        # Confidence interval
+        df_sd = df_lmm2.loc[ df_lmm2['valence']=='Positive', ['id_exp_participant', 'Avg_'+trait_group] ].groupby('id_exp_participant').describe().reset_index()
+        conf_int = (df_sd[('Avg_'+trait_group,'std')] / np.sqrt(df_sd[('Avg_'+trait_group,'count')]) ) * 1.96
+        plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.1, color='tab:green')
+        
+        # Neutral
+        df_mean = df_lmm2.loc[ df_lmm2['valence']=='Neutral', ['id_exp_participant', 'Avg_'+trait_group] ].groupby('id_exp_participant').mean().reset_index()
+        x = df_mean['id_exp_participant']
+        y = df_mean['Avg_'+trait_group]
+        ax1 = plt.plot(x, y, color='blue', label='Neutral')
+        # Confidence interval
+        df_sd = df_lmm2.loc[ df_lmm2['valence']=='Neutral', ['id_exp_participant', 'Avg_'+trait_group] ].groupby('id_exp_participant').describe().reset_index()
+        conf_int = (df_sd[('Avg_'+trait_group,'std')] / np.sqrt(df_sd[('Avg_'+trait_group,'count')]) ) * 1.96
+        plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.1, color='tab:blue')
+        
+        # Negative
+        df_mean = df_lmm2.loc[ df_lmm2['valence']=='Negative', ['id_exp_participant', 'Avg_'+trait_group] ].groupby('id_exp_participant').mean().reset_index()
+        x = df_mean['id_exp_participant']
+        y = df_mean['Avg_'+trait_group]
+        ax1 = plt.plot(x, y, color='red', label='Negative')
+        # Confidence interval
+        df_sd = df_lmm2.loc[ df_lmm2['valence']=='Negative', ['id_exp_participant', 'Avg_'+trait_group] ].groupby('id_exp_participant').describe().reset_index()
+        conf_int = (df_sd[('Avg_'+trait_group,'std')] / np.sqrt(df_sd[('Avg_'+trait_group,'count')]) ) * 1.96
+        plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.1, color='tab:red')
+        
+        # Other settings
+        trait_group_labels = {'In': 'Ingroup', 'Out': 'Outgroup'}
+        #ax1.set(title='Traits: '+trait_valence_labels[trait_valence], xlabel='Generation', ylabel='FOT: Frequency of occurrence of a trait [%]')    
+        fig.suptitle('Traits: '+trait_group_labels[trait_group])
+        plt.xlabel('Generation')
+        plt.ylabel('FOT: Frequency of occurrence of a trait [%]')
+        plt.legend(loc="lower left")
+        
+        # Display in streamlit
+        st.pyplot(fig)
+        
+        
+        ################################################
+        ################ OUTGROUP
+        ################################################
+        
+        st.markdown('### Ingroup traits')
+        trait_group = "Out"
+        # Rearrange the data
+        df_lmm2 = pd.melt(df_ALL, 
+                          id_vars=['participant_exp_code', 'id_exp_chain', 'id_exp_participant'], 
+                          value_vars=[f'Avg_{trait_group}_Neg', f'Avg_{trait_group}_Neu', f'Avg_{trait_group}_Pos'], 
+                          var_name ='valence', 
+                          value_name ='Avg_'+trait_group)
+        df_lmm2['valence'] = df_lmm2['valence'].map({ f'Avg_{trait_group}_Neg': 'Negative', f'Avg_{trait_group}_Neu': 'Neutral', f'Avg_{trait_group}_Pos': 'Positive' })
+        
+        # Set plot style
+        sns.set(font_scale=2)
+        sns.set_style('whitegrid')
+        fig, ax1 = plt.subplots()
+        fig.set_size_inches(18, 10)
+    
+        # Produce Lineplot + Stripplot
+        
+        # Add the 50% line
+        plt.plot([0, 10], [50, 50], color='grey')
+    
+        # SCATTERPLOT
+        # SEABORN: ax1 = sns.stripplot(x="id_exp_participant", y='Avg_'+trait_valence, data=df_lmm2, hue='group', palette = ['g', 'r'] )
+        # Positive
+        x = df_lmm2.loc[ df_lmm2['valence']=='Positive', 'id_exp_participant']
+        y = df_lmm2.loc[ df_lmm2['valence']=='Positive', 'Avg_'+trait_group]
+        ax1 = plt.scatter(x=x, y=y, color='green')
+        # Neutral
+        x = df_lmm2.loc[ df_lmm2['valence']=='Neutral', 'id_exp_participant']
+        y = df_lmm2.loc[ df_lmm2['valence']=='Neutral', 'Avg_'+trait_group]
+        ax1 = plt.scatter(x=x, y=y, color='blue')
+        # Negative
+        x = df_lmm2.loc[ df_lmm2['valence']=='Negative', 'id_exp_participant']
+        y = df_lmm2.loc[ df_lmm2['valence']=='Negative', 'Avg_'+trait_group]
+        ax1 = plt.scatter(x=x, y=y, color='red')
+    
+        # LINEPLOT
+        # SEABORN: #ax1 = sns.lineplot(x='id_exp_participant', y='Avg_'+trait_valence, data=df_lmm2, hue='group', err_style='band', ci=95, palette = ['g', 'r'] )
+        # Positive
+        df_mean = df_lmm2.loc[ df_lmm2['valence']=='Positive', ['id_exp_participant', 'Avg_'+trait_group] ].groupby('id_exp_participant').mean().reset_index()
+        x = df_mean['id_exp_participant']
+        y = df_mean['Avg_'+trait_group]
+        ax1 = plt.plot(x, y, color='green', label='Positive')
+        # Confidence interval
+        df_sd = df_lmm2.loc[ df_lmm2['valence']=='Positive', ['id_exp_participant', 'Avg_'+trait_group] ].groupby('id_exp_participant').describe().reset_index()
+        conf_int = (df_sd[('Avg_'+trait_group,'std')] / np.sqrt(df_sd[('Avg_'+trait_group,'count')]) ) * 1.96
+        plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.1, color='tab:green')
+        
+        # Neutral
+        df_mean = df_lmm2.loc[ df_lmm2['valence']=='Neutral', ['id_exp_participant', 'Avg_'+trait_group] ].groupby('id_exp_participant').mean().reset_index()
+        x = df_mean['id_exp_participant']
+        y = df_mean['Avg_'+trait_group]
+        ax1 = plt.plot(x, y, color='blue', label='Neutral')
+        # Confidence interval
+        df_sd = df_lmm2.loc[ df_lmm2['valence']=='Neutral', ['id_exp_participant', 'Avg_'+trait_group] ].groupby('id_exp_participant').describe().reset_index()
+        conf_int = (df_sd[('Avg_'+trait_group,'std')] / np.sqrt(df_sd[('Avg_'+trait_group,'count')]) ) * 1.96
+        plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.1, color='tab:blue')
+        
+        # Negative
+        df_mean = df_lmm2.loc[ df_lmm2['valence']=='Negative', ['id_exp_participant', 'Avg_'+trait_group] ].groupby('id_exp_participant').mean().reset_index()
+        x = df_mean['id_exp_participant']
+        y = df_mean['Avg_'+trait_group]
+        ax1 = plt.plot(x, y, color='red', label='Negative')
+        # Confidence interval
+        df_sd = df_lmm2.loc[ df_lmm2['valence']=='Negative', ['id_exp_participant', 'Avg_'+trait_group] ].groupby('id_exp_participant').describe().reset_index()
+        conf_int = (df_sd[('Avg_'+trait_group,'std')] / np.sqrt(df_sd[('Avg_'+trait_group,'count')]) ) * 1.96
+        plt.fill_between(x, y-conf_int, y+conf_int, alpha=0.1, color='tab:red')
+        
+        # Other settings
+        trait_group_labels = {'In': 'Ingroup', 'Out': 'Outgroup'}
+        #ax1.set(title='Traits: '+trait_valence_labels[trait_valence], xlabel='Generation', ylabel='FOT: Frequency of occurrence of a trait [%]')    
+        fig.suptitle('Traits: '+trait_group_labels[trait_group])
+        plt.xlabel('Generation')
+        plt.ylabel('FOT: Frequency of occurrence of a trait [%]')
+        plt.legend(loc="lower left")
+        
+        # Display in streamlit
+        st.pyplot(fig)
     
 #%% BUTTON == 'Analysis of individual traits'
 
